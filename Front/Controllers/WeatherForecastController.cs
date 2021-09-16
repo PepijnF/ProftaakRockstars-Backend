@@ -35,6 +35,5 @@ namespace Proftaak.Controllers
             })
             .ToArray();
         }
-        
     }
 }

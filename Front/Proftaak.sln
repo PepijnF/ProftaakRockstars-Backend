@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proftaak", "Front\Proftaak.csproj", "{AAA91030-9F13-4933-A868-49866A2BA466}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proftaak", "Proftaak.csproj", "{AAA91030-9F13-4933-A868-49866A2BA466}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{34395BA5-0AEF-4B55-ACDA-08C22E8B9BE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "..\DAL\DAL.csproj", "{34395BA5-0AEF-4B55-ACDA-08C22E8B9BE8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{9EB9ACF5-E07A-4D58-B255-968FF9E8A47F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "..\Logic\Logic.csproj", "{9EB9ACF5-E07A-4D58-B255-968FF9E8A47F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

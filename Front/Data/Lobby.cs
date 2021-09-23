@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Proftaak.Data
 {
     public class Lobby
     {
-        /// <summary>
-        /// Id of the lobby
-        /// </summary>
         public string Id { get; set; }
         public string OwnerId { get; set; }
         public string InviteCode { get; set; }

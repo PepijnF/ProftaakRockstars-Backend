@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Proftaak.Controllers
 {
-    public class QuizController : Controller
+    public class QuizController : ControllerBase
     {
         // GET
         public IActionResult Index()

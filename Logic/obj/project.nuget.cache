@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "AvhOcbKDfqa0DMkxEa9iLz9S6K9vExDRaqkuuQG0vuMFW9971KpoDNGKZTtldUdGoXwtFcSFpD4HTFjY8sxeWQ==",
+  "dgSpecHash": "p2B/ulsmXWgm7z9NrIwS0+j7ACvEm7N8VbkHVqcUJe4WUud9FNfof/qZrdH5z7n9P9K06rB5dllVJxjEFJA8rA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\Logic\\Logic.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/pepijn/Documents/ProftaakRockstars-Backend/Logic/Logic.csproj",
+  "expectedPackageFiles": [
+    "/home/pepijn/.nuget/packages/microsoft.netcore.app.ref/3.1.0/microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
+    "/home/pepijn/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.10/microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "/home/pepijn/.nuget/packages/microsoft.netcore.app.host.linux-x64/3.1.18/microsoft.netcore.app.host.linux-x64.3.1.18.nupkg.sha512"
+  ],
   "logs": []
 }

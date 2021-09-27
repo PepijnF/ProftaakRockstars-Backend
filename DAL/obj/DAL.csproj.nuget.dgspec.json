@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/home/pepijn/Documents/ProftaakRockstars-Backend/DAL/DAL.csproj": {}
+    "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\DAL\\DAL.csproj": {}
   },
   "projects": {
-    "/home/pepijn/Documents/ProftaakRockstars-Backend/DAL/DAL.csproj": {
+    "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/pepijn/Documents/ProftaakRockstars-Backend/DAL/DAL.csproj",
+        "projectUniqueName": "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "/home/pepijn/Documents/ProftaakRockstars-Backend/DAL/DAL.csproj",
-        "packagesPath": "/home/pepijn/.nuget/packages/",
-        "outputPath": "/home/pepijn/Documents/ProftaakRockstars-Backend/DAL/obj/",
+        "projectPath": "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\Yannick\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/pepijn/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Yannick\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -47,26 +49,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[3.1.10, 3.1.10]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[3.1.18, 3.1.18]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[3.1.0, 3.1.0]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/pepijn/.dotnet/sdk/5.0.400/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

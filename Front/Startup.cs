@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Proftaak.Data;
+using Proftaak.Services;
 
 namespace Proftaak
 {
@@ -29,7 +30,6 @@ namespace Proftaak
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -65,6 +65,10 @@ namespace Proftaak
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+            app.Run(async (context) =>
+            {
+                WebSockets.StartServer();
             });
             
             

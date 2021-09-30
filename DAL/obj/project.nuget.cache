@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "IDgaPL3Ig1UvdHQOLdDmuIyIeRYF78R5ALNb4p/2imx68NdFF/hB/mqApTEhNAZjv6M+1pDbvd6TKJabcIVIvg==",
+  "dgSpecHash": "Bty86s/XeVuDkSlaJU9Lsp1ZSW6hXH2UYRv80WVWH6FYOzkYd6QIC5SFt+sbOZHFK8ifYBFmK2vjqQxni6EAEA==",
   "success": true,
-  "projectFilePath": "/home/pepijn/Documents/ProftaakRockstars-Backend/DAL/DAL.csproj",
-  "expectedPackageFiles": [
-    "/home/pepijn/.nuget/packages/microsoft.netcore.app.ref/3.1.0/microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
-    "/home/pepijn/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.10/microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
-    "/home/pepijn/.nuget/packages/microsoft.netcore.app.host.linux-x64/3.1.18/microsoft.netcore.app.host.linux-x64.3.1.18.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\EbeKo\\Documents\\Semester 2A\\Proftaak\\ProftaakRockstars-Backend\\DAL\\DAL.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

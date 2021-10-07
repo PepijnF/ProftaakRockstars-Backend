@@ -41,6 +41,11 @@ namespace Proftaak
                 c.IncludeXmlComments(xmlPath);
             });
             services.AddSingleton<LobbyContainer>();
+
+
+            // WebSockets server
+            WebSockets webSockets = new WebSockets();
+            webSockets.StartServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,7 +73,7 @@ namespace Proftaak
             });
             app.Run(async (context) =>
             {
-                WebSockets.StartServer();
+                
             });
             
             

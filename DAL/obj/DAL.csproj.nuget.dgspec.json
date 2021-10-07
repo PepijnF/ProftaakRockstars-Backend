@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\EbeKo\\Documents\\Semester 2A\\Proftaak\\ProftaakRockstars-Backend\\DAL\\DAL.csproj": {}
+    "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\DAL\\DAL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\EbeKo\\Documents\\Semester 2A\\Proftaak\\ProftaakRockstars-Backend\\DAL\\DAL.csproj": {
+    "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\EbeKo\\Documents\\Semester 2A\\Proftaak\\ProftaakRockstars-Backend\\DAL\\DAL.csproj",
+        "projectUniqueName": "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "C:\\Users\\EbeKo\\Documents\\Semester 2A\\Proftaak\\ProftaakRockstars-Backend\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\EbeKo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\EbeKo\\Documents\\Semester 2A\\Proftaak\\ProftaakRockstars-Backend\\DAL\\obj\\",
+        "projectPath": "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\Yannick\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\EbeKo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Yannick\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -54,7 +54,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

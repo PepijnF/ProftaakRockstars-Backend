@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\EbeKo\\.nuget\\packages\\": {}
+    "C:\\Users\\Yannick\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\EbeKo\\Documents\\Semester 2A\\Proftaak\\ProftaakRockstars-Backend\\Logic\\Logic.csproj",
+      "projectUniqueName": "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\Logic\\Logic.csproj",
       "projectName": "Logic",
-      "projectPath": "C:\\Users\\EbeKo\\Documents\\Semester 2A\\Proftaak\\ProftaakRockstars-Backend\\Logic\\Logic.csproj",
-      "packagesPath": "C:\\Users\\EbeKo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\EbeKo\\Documents\\Semester 2A\\Proftaak\\ProftaakRockstars-Backend\\Logic\\obj\\",
+      "projectPath": "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\Logic\\Logic.csproj",
+      "packagesPath": "C:\\Users\\Yannick\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Yannick\\Documents\\GitHub\\ProftaakRockstars-Backend\\Logic\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\EbeKo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Yannick\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -60,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }

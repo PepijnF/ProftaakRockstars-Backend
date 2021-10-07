@@ -14,10 +14,25 @@ namespace Proftaak.Controllers
     public class LobbyController : ControllerBase
     {
         private LobbyContainer _lobbyContainer;
-        
+               
         public LobbyController(LobbyContainer lobbyContainer)
         {
             _lobbyContainer = lobbyContainer;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>A newly created UserObject</returns>
+        [HttpGet("GetUserId")]
+        public ActionResult<User> GetUserId(string userName)
+        {
+            return Ok(new User(){
+                Id = Guid.NewGuid().ToString(),
+                Name = userName,
+                Score = 0
+            });
         }
     
         /// <summary>
@@ -56,6 +71,7 @@ namespace Proftaak.Controllers
             {
                 if (lobby.IsOpen && lobby.InviteCode == inviteCode)
                 {
+                    // Mogelijk verwijderen later
                     lobby.Users.Add(new User()
                     {
                         Id = userId,

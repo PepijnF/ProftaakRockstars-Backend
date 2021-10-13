@@ -8,13 +8,25 @@ using System.Web;
 using Fleck;
 using Proftaak.Data;
 using System.Text.Json;
+using Proftaak.WebSocketModels;
+using System.Reflection;
 
 namespace Proftaak.Services
 {
     public class WebSockets
     {
         WebSocketServer server = new WebSocketServer("ws://127.0.0.1:8001");
-        List<WsUser> connections = new List<WsUser>();
+        List<User> connections = new List<User>();
+        private UserContainer _userContainer;
+        private ClientController _clientController;
+
+        public WebSockets(ClientController clientController, UserContainer userContainer)
+        {
+            _clientController = clientController;
+            _userContainer = userContainer;
+
+            this.StartServer();
+        }
 
         public void StartServer()
         {
@@ -22,44 +34,37 @@ namespace Proftaak.Services
             {
                 socket.OnOpen = () =>
                 {
-                    WsUser wsUser = new WsUser(socket);
-                    connections.Add(wsUser);
-                    Console.WriteLine("Connection opened " + wsUser.Username + " in room " + wsUser.RoomNumber);
+                    User User = new User(socket);
+                    connections.Add(User);
+                    Console.WriteLine("Connection opened " + User.Username + " in room " + User.RoomNumber);
                 };
                 socket.OnMessage = message =>
                 {
                     
-                    WsUser sendUser = connections.Find(u => u.Id == socket.ConnectionInfo.Id);
-                    List<WsUser> roomMembers = connections.FindAll(u => u.RoomNumber == sendUser.RoomNumber);
-
                     char[] delimChars = {':', '}', '{', '[', ']', ',', '"'};
                     var words = message.Split(delimChars);
-                    if(words[5] == "IsReady")
-                    {
-                        ListUsersModel listUsers = new ListUsersModel();
-                        foreach(var user in roomMembers)
-                        {
-                            listUsers.Users.Add(user.Username);
-                        }
 
-                        foreach(var user in roomMembers)
-                        {
-                            user.SocketConnection.Send(JsonSerializer.Serialize(listUsers));
-                        }
-                    }
+                    // 5 is controller
+                    // 11 is method
+                    //message converten naar class zodat deze troep niet hoeft
+                    string controller = "Proftaak.WebSocketControllers." + words[5];
+                    string methodName = words[11];
+
+                    //Get the method information using the method info class
+                    MethodInfo mi = Type.GetType(controller).GetMethod(methodName);
 
 
-                    //foreach (var wsUser in roomMembers)
-                    //{
-                    //    wsUser.SocketConnection.Send(sendUser.Username + " " + message);
-                    //}
-
-                    
+                    //Pieter's code
+                    var controllerInst = Activator.CreateInstance(Type.GetType(controller));
+                    //Invoke the method
+                    // (null- no parameter for the method call
+                    // or you can pass the array of parameters...)
+                    mi.Invoke(controllerInst, null);
                 };
                 socket.OnClose = () =>
                 {
-                    WsUser wsUser = connections.Find(u => u.Id == socket.ConnectionInfo.Id);
-                    Console.WriteLine(wsUser.Username + " Disconnected");
+                    User User = connections.Find(u => u.Id == socket.ConnectionInfo.Id.ToString());
+                    Console.WriteLine(User.Username + " Disconnected");
                 };
             });
         }

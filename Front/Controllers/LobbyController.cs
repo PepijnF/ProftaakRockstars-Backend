@@ -72,17 +72,16 @@ namespace Proftaak.Controllers
                 if (lobby.IsOpen && lobby.InviteCode == inviteCode)
                 {
                     // Mogelijk verwijderen later
-                    lobby.Users.Add(new User()
-                    {
-                        Id = userId,
-                        Name = userName,
-                        Score = 0
-                    });
+                    //lobby.Users.Add(new User()
+                    //{
+                    //    Id = userId,
+                    //    Name = userName,
+                    //    Score = 0
+                    //});
                     // Mogelijk data meegeven
-                    return Accepted(lobby);
+                    return Accepted(lobby.Id);
                 }
             }
-
             return NotFound("Lobby not found");
         }
 

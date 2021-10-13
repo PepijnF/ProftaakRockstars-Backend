@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Proftaak.Data;
 using Proftaak.Services;
+using Proftaak.WebSocketModels;
 
 namespace Proftaak
 {
@@ -41,11 +42,20 @@ namespace Proftaak
                 c.IncludeXmlComments(xmlPath);
             });
             services.AddSingleton<LobbyContainer>();
+            services.AddSingleton<UserContainer>();
+
+            services.AddSingleton<ClientController>();
+            services.AddSingleton<WebSockets>();
 
 
-            // WebSockets server
-            WebSockets webSockets = new WebSockets();
-            webSockets.StartServer();
+            //WebSockets server
+            //WebSockets webSockets = new WebSockets(usercontainer => new UserContainer(provider.GetService<UserContainer>()), provider => new ClientController(provider.GetService<ClientController>()));
+            //WebSockets webSockets = new WebSockets();
+
+
+            //Verban de schrijver van deze code naar de diepste delen van de hel
+            //WebSockets webSockets = new WebSockets((ClientController)services.ToList().Find(s => s.GetType() == typeof(ClientController)).ImplementationInstance, (UserContainer)services.ToList().Find(s => s.GetType() == typeof(UserContainer)).ImplementationInstance);
+            //webSockets.StartServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

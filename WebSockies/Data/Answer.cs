@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebSockies.Data
 {
-    class Class1
+    public class Answer
     {
+        public string QuestionString;
+        public bool IsCorrect;
     }
 }

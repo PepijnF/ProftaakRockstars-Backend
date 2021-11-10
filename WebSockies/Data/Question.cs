@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebSockies.Data
 {
-    class Question
+    public class Question
     {
+        public string QuestionString;
+        public List<Answer> Answers;
     }
 }

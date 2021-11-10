@@ -44,15 +44,12 @@ namespace WebSockies
                             var controllerInst = Activator.CreateInstance(Type.GetType("WebSockies." + messageModel.Controller), _userContainer, _lobbyContainer);
                             List<Object> parameters = new List<Object>();
                             parameters.Add(_userContainer.users.Find(u => u.SocketConnection.ConnectionInfo.Id == socket.ConnectionInfo.Id));
-                            if (messageModel.Parameters != null)
+                            if (messageModel.Parameters.Length != 0)
                             {
                                 parameters.Add(messageModel.Parameters);
-                                mi.Invoke(controllerInst, parameters.ToArray());
                             }
-                            else
-                            {
-                                mi.Invoke(controllerInst, parameters.ToArray());
-                            }
+                            mi.Invoke(controllerInst, parameters.ToArray());
+                            
                         };
                         socket.OnClose = () =>
                         {

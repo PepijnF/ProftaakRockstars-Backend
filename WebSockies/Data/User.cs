@@ -11,6 +11,7 @@ namespace WebSockies
         public IWebSocketConnection SocketConnection { get; set; }
         public string Name { get; set; }
         public int Score {get; set;}
+        public bool IsHost;
         private string _getValue(string key)
         {
             string path = this.SocketConnection.ConnectionInfo.Path;

@@ -8,5 +8,10 @@ namespace WebSockies
         {
             Console.WriteLine("Hello World");
         }
+
+        public HelloWorldModel(UserContainer userContainer)
+        {
+            
+        }
     }
 }

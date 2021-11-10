@@ -26,7 +26,7 @@ namespace WebSockies.Logic
         public void SendAllLobbyUsers(string roomNumber)
         {
             List<User> roomMembers = GetAllUsersInRoom(roomNumber);
-            ResponseModel responsemodel = new ResponseModel("UserList", "OK", JsonSerializer.Serialize(roomMembers.Select(u => u.Username).ToList()));
+            ResponseModel responsemodel = new ResponseModel("UserList", "OK", roomMembers.Select(u => u.Username).ToList());
 
             foreach (User user in roomMembers)
             {

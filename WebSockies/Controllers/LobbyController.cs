@@ -10,12 +10,10 @@ namespace WebSockies
     {
         private LobbyContainer _lobbyContainer;
         private UserContainer _userContainer;
-        private ClientController _clientController;
         private LobbyLogic _lobbyLogic;
-        public LobbyController(LobbyContainer lobbyContainer, UserContainer userContainer, ClientController clientController) {
+        public LobbyController(UserContainer userContainer, LobbyContainer lobbyContainer) {
             _userContainer = userContainer;
             _lobbyContainer = lobbyContainer;
-            _clientController = clientController;
             _lobbyLogic = new LobbyLogic(_lobbyContainer, _userContainer);
         
         }

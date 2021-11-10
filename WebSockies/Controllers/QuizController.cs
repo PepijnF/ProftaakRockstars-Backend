@@ -32,7 +32,7 @@ namespace WebSockies
                     int basescore = 1000;
                     double ScoreDecayPerMs = (basescore / SettingsTimePerQuestion);
                     user.Score = (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
-
+                    Console.WriteLine(user.Score);
                     NextQuestion(user);
                 }
 

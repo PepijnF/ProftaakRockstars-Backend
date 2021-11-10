@@ -13,18 +13,27 @@ namespace WebSockies
            
            foreach(var roomUser in roomMembers) 
            {
-               roomUser.SocketConnection.Send("Dik");
+               roomUser.SocketConnection.Send(JsonSerializer.Serialize(roomMembers));
            }
         }
-
+        public void SendAllLobbyUsers(string roomNumber) {
+            List<User> roomMembers = _userContainer.users.FindAll(u => u.RoomNumber == roomNumber);
+            foreach (User user in roomMembers)
+            {
+                user.SocketConnection.Send(JsonSerializer.Serialize(roomMembers));
+            }
+        }
 
         public void JoinLobby(User user, string[] paramStrings)
         {
             _userContainer.users.Find(u => u.Username == user.Username).RoomNumber = paramStrings[0];
             user.SocketConnection.Send(JsonSerializer.Serialize(new StatusResponseModel() {Status = "OK"}));
+
+            SendAllLobbyUsers(user.RoomNumber);
+            
         }
-        
-        public void CreateLobby(User user)
+
+        public void CreateLobby(User user) { }
 
         public void HelloWorld()
         {

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace WebSockies.Data
 {
-    class LobbySettings
+    public class LobbySettings
     {
+        public List<Question> Questions;
+        public int TimePerQuestion;
+
     }
 }

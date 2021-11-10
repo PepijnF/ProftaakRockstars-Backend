@@ -14,10 +14,5 @@ namespace WebSockies
                roomUser.SocketConnection.Send("Dik");
            }
         }
-
-        public void HelloWorld()
-        {
-            Console.WriteLine("Hello World!");
-        }
     }
 }

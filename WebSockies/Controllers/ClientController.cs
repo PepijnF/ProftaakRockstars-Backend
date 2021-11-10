@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using WebSockies.Containers;
 using WebSockies.Data;
+using WebSockies.Data.Models;
 
 namespace WebSockies 
 {
@@ -22,9 +23,11 @@ namespace WebSockies
         }
         public void SendAllLobbyUsers(string roomNumber) {
             List<User> roomMembers = _userContainer.users.FindAll(u => u.RoomNumber == roomNumber);
+            ResponseModel responsemodel = new ResponseModel("UserList", "OK", JsonSerializer.Serialize(roomMembers.Select(u => u.Username).ToList()));
+            
             foreach (User user in roomMembers)
             {
-                user.SocketConnection.Send(JsonSerializer.Serialize(roomMembers.Select(u => u.Username).ToList()));
+                user.SocketConnection.Send(JsonSerializer.Serialize(responsemodel));
             }
         }
 

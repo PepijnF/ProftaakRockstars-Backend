@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Fleck;
 using System.Reflection;
 using System.Text.Json;
@@ -13,12 +15,10 @@ namespace WebSockies
                 WebSocketServer server = new WebSocketServer("ws://127.0.0.1:8001");
                 List<User> connections = new List<User>();
                 private UserContainer _userContainer;
-                private ClientController _clientController;
         
-                public WebSockets(UserContainer userContainer, ClientController clientController)
+                public WebSockets(UserContainer userContainer)
                 {
                     _userContainer = userContainer;
-                    _clientController = clientController;
                 }
         
                 public void StartServer()
@@ -27,9 +27,9 @@ namespace WebSockies
                     {
                         socket.OnOpen = () =>
                         {
-                            User User = new User(socket);
-                            connections.Add(User);
-                            Console.WriteLine("Connection opened " + User.Username + " in room " + User.RoomNumber);
+                            User user = new User(socket);
+                            _userContainer.users.Add(user);
+                            Console.WriteLine("Connection opened " + user.Username + " in room " + user.RoomNumber);
                         };
                         socket.OnMessage = message =>
                         {
@@ -38,8 +38,18 @@ namespace WebSockies
                             MethodInfo mi = Type.GetType("WebSockies." + messageModel.Controller)
                                 .GetMethod(messageModel.Method);
 
-                            var controllerInst = Activator.CreateInstance(Type.GetType("WebSockies." + messageModel.Controller));
-                            mi.Invoke(controllerInst, null);
+                            var controllerInst = Activator.CreateInstance(Type.GetType("WebSockies." + messageModel.Controller), _userContainer);
+                            List<Object> parameters = new List<Object>();
+                            parameters.Add(_userContainer.users.Find(u => u.SocketConnection.ConnectionInfo.Id == socket.ConnectionInfo.Id));
+                            parameters.Add(messageModel.Parameters);
+                            if (messageModel.Parameters != null)
+                            {
+                                mi.Invoke(controllerInst, parameters.ToArray());
+                            }
+                            else
+                            {
+                                mi.Invoke(controllerInst, null);
+                            }
                         };
                         socket.OnClose = () =>
                         {
@@ -51,7 +61,7 @@ namespace WebSockies
             }
         static void Main(string[] args)
         {
-            WebSockets webSockets = new WebSockets(new UserContainer(), new ClientController());
+            WebSockets webSockets = new WebSockets(new UserContainer());
             webSockets.StartServer();
             Console.ReadKey();
         }

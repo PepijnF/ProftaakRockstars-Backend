@@ -20,7 +20,7 @@ namespace WebSockies
         public void submitAnswer(User user, Answer answer)
         {
             
-            if (!_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.RoomNumber).HasAnswered.Contains(user))
+            if (!_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.RoomNumber).HasAnswered.Contains(user) && _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.RoomNumber).IsOpen)
             {
                 _lobbyContainer.Lobbies.Find(k => k.InviteCode == user.RoomNumber).HasAnswered.Add(user);
 
@@ -42,6 +42,7 @@ namespace WebSockies
         public void NextQuestion(User user)
         {
             _lobbyContainer.Lobbies.Find(o => o.InviteCode == user.RoomNumber).HasAnswered.Clear();
+            
 
 
         }

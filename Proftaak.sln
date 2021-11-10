@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{9EB9ACF5-E07A-4D58-B255-968FF9E8A47F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSockies", "WebSockies\WebSockies.csproj", "{63FD424E-C8B6-48C3-9529-3B42BFDE6D4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9EB9ACF5-E07A-4D58-B255-968FF9E8A47F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EB9ACF5-E07A-4D58-B255-968FF9E8A47F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EB9ACF5-E07A-4D58-B255-968FF9E8A47F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63FD424E-C8B6-48C3-9529-3B42BFDE6D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63FD424E-C8B6-48C3-9529-3B42BFDE6D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63FD424E-C8B6-48C3-9529-3B42BFDE6D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63FD424E-C8B6-48C3-9529-3B42BFDE6D4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

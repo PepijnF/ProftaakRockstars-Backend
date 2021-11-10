@@ -1,4 +1,4 @@
-﻿namespace Proftaak.WebSocketControllers
+﻿namespace WebSockies
 {
     public class QuestionController
     {

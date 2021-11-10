@@ -1,8 +1,7 @@
-using Proftaak.Data;
 using System;
 using System.Collections.Generic;
 
-namespace Proftaak.WebSocketModels 
+namespace WebSockies 
 {
     public class ClientController 
     {

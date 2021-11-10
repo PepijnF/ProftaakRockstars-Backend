@@ -1,10 +1,7 @@
-﻿using Fleck;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using Fleck;
 
-namespace Proftaak.Data
+namespace WebSockies
 {
     public class User
     {

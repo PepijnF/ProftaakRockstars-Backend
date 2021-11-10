@@ -12,18 +12,21 @@ namespace WebSockies
     {
         private UserContainer _userContainer;
         private LobbyContainer _lobbyContainer;
-        public void GetAllUsers(User user, List<User> users)
+        public ClientController(UserContainer userContainer, LobbyContainer lobbyContainer)
         {
-            List<User> roomMembers = users.FindAll(u => u.RoomNumber == user.RoomNumber);
-           
-           foreach(var roomUser in roomMembers) 
-           {
-               roomUser.SocketConnection.Send(JsonSerializer.Serialize(roomMembers));
-           }
+            _userContainer = userContainer;
+            _lobbyContainer = lobbyContainer;
         }
-        private void SendAllLobbyUsers(string roomNumber) {
+
+        public List<User> GetAllUsersInRoom(string roomNumber)
+        {
             List<User> roomMembers = _userContainer.users.FindAll(u => u.RoomNumber == roomNumber);
-            ResponseModel responsemodel = new ResponseModel("UserList", "OK", roomMembers.Select(u => u.Username).ToList());
+            return roomMembers;
+
+        }
+        public void SendAllLobbyUsers(string roomNumber) {
+            List<User> roomMembers = GetAllUsersInRoom(roomNumber);
+            ResponseModel responsemodel = new ResponseModel("UserList", "OK", JsonSerializer.Serialize(roomMembers.Select(u => u.Username).ToList()));
             
             foreach (User user in roomMembers)
             {

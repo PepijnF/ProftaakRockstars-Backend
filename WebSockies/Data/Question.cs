@@ -8,7 +8,9 @@ namespace WebSockies.Data
 {
     public class Question
     {
+        public string Id;
         public string QuestionString;
         public List<Answer> Answers;
+        public DateTime TimeStarted;
     }
 }

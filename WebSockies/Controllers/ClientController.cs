@@ -36,7 +36,7 @@ namespace WebSockies
             if (_lobbyContainer.Lobbies.Exists(l => l.InviteCode == paramStrings[0]))
             {
                 _userContainer.users[_userContainer.users.IndexOf(user)].RoomNumber = paramStrings[0];
-                user.SocketConnection.Send(JsonSerializer.Serialize(new StatusResponseModel() {Status = "OK", Content = "Lobby joined"}));
+                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Lobby Joined")));
                 
                 SendAllLobbyUsers(paramStrings[0]);
             }

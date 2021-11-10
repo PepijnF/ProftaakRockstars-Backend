@@ -12,7 +12,8 @@ namespace WebSockies.Data
         public string InviteCode { get; set; }
         public List<User> Users { get; set; }
         public bool IsOpen { get; set; }
-
+        public List<User> HasAnswered { get; set;} 
+        public LobbySettings Settings { get; set; }
         public Lobby(string userId, string userName)
         {
             Id = Guid.NewGuid().ToString();

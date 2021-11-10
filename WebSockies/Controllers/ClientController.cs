@@ -50,8 +50,11 @@ namespace WebSockies
         public void CreateLobby(User user)
         {
             Lobby lobby = new Lobby(user.SocketConnection.ConnectionInfo.Id.ToString(), user.Username);
-            user.SocketConnection.Send(JsonSerializer.Serialize(new StatusResponseModel() {Status = "OK", Content = lobby.InviteCode}));
+            user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("InviteCode", "OK", lobby.InviteCode)));
             _lobbyContainer.Lobbies.Add(lobby);
+
+            _userContainer.users[_userContainer.users.IndexOf(user)].RoomNumber = lobby.InviteCode;
+            SendAllLobbyUsers(lobby.InviteCode);
         } 
 
         public void HelloWorld()

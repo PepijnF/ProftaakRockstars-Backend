@@ -8,8 +8,14 @@ namespace WebSockies.Data
 {
     public class LobbySettings
     {
+        public LobbySettings()
+        {
+            TimePerQuestion = 10;
+        }
+        
         public List<Question> Questions;
         public int TimePerQuestion;
+        
 
     }
 }

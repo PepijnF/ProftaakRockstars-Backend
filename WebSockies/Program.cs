@@ -63,6 +63,7 @@ namespace WebSockies
         static void Main(string[] args)
         {
             WebSockets webSockets = new WebSockets(new UserContainer(), new LobbyContainer());
+
             webSockets.StartServer();
             Console.ReadKey();
         }

@@ -18,56 +18,10 @@ namespace WebSockies
             _lobbyContainer = lobbyContainer;
         }
 
-        public List<User> GetAllUsersInRoom(string roomNumber)
-        {
-            List<User> roomMembers = _userContainer.users.FindAll(u => u.RoomNumber == roomNumber);
-            return roomMembers;
+        
 
-        }
-        public void SendAllLobbyUsers(string roomNumber) {
-            List<User> roomMembers = GetAllUsersInRoom(roomNumber);
-            ResponseModel responsemodel = new ResponseModel("UserList", "OK", JsonSerializer.Serialize(roomMembers.Select(u => u.Username).ToList()));
-            
-            foreach (User user in roomMembers)
-            {
-                user.SocketConnection.Send(JsonSerializer.Serialize(responsemodel));
-            }
-        }
 
-        public void JoinLobby(User user, string[] paramStrings)
-        {
-            if (_lobbyContainer.Lobbies.Exists(l => l.InviteCode == paramStrings[0]))
-            {
-                _userContainer.users[_userContainer.users.IndexOf(user)].RoomNumber = paramStrings[0];
-                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Lobby Joined")));
-                
-                SendAllLobbyUsers(paramStrings[0]);
-            }
-            else
-            {
-                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "Failed", "Lobby doesn't exist")));
-            }
-        }
 
-        public void CreateLobby(User user)
-        {
-            Lobby lobby = new Lobby(user.SocketConnection.ConnectionInfo.Id.ToString(), user.Username);
-            user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("InviteCode", "OK", lobby.InviteCode)));
-            _lobbyContainer.Lobbies.Add(lobby);
-
-            _userContainer.users[_userContainer.users.IndexOf(user)].RoomNumber = lobby.InviteCode;
-            SendAllLobbyUsers(lobby.InviteCode);
-        }
-
-        public void StartQuiz(User user)
-        {
-            var lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.RoomNumber);
-            if (user.Id == lobby.OwnerId)
-            {
-                _lobbyContainer.Lobbies[_lobbyContainer.Lobbies.IndexOf(lobby)].IsOpen = false;
-                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Quiz started")));
-            }
-        }
         
     }
 }

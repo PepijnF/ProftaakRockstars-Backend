@@ -5,6 +5,7 @@ using System.Linq;
 using Fleck;
 using System.Reflection;
 using System.Text.Json;
+using WebSockies.Containers;
 
 namespace WebSockies
 {
@@ -15,10 +16,12 @@ namespace WebSockies
                 WebSocketServer server = new WebSocketServer("ws://127.0.0.1:8001");
                 List<User> connections = new List<User>();
                 private UserContainer _userContainer;
+                private LobbyContainer _lobbyContainer;
         
-                public WebSockets(UserContainer userContainer)
+                public WebSockets(UserContainer userContainer, LobbyContainer lobbyContainer)
                 {
                     _userContainer = userContainer;
+                    _lobbyContainer = lobbyContainer;
                 }
         
                 public void StartServer()
@@ -38,30 +41,31 @@ namespace WebSockies
                             MethodInfo mi = Type.GetType("WebSockies." + messageModel.Controller)
                                 .GetMethod(messageModel.Method);
 
-                            var controllerInst = Activator.CreateInstance(Type.GetType("WebSockies." + messageModel.Controller), _userContainer);
+                            var controllerInst = Activator.CreateInstance(Type.GetType("WebSockies." + messageModel.Controller), _userContainer, _lobbyContainer);
                             List<Object> parameters = new List<Object>();
                             parameters.Add(_userContainer.users.Find(u => u.SocketConnection.ConnectionInfo.Id == socket.ConnectionInfo.Id));
-                            parameters.Add(messageModel.Parameters);
                             if (messageModel.Parameters != null)
                             {
+                                parameters.Add(messageModel.Parameters);
                                 mi.Invoke(controllerInst, parameters.ToArray());
                             }
                             else
                             {
-                                mi.Invoke(controllerInst, null);
+                                mi.Invoke(controllerInst, parameters.ToArray());
                             }
                         };
                         socket.OnClose = () =>
                         {
-                            User User = connections.Find(u => u.Id == socket.ConnectionInfo.Id.ToString());
-                            Console.WriteLine(User.Username + " Disconnected");
+                            User user = connections.Find(u => u.Id == socket.ConnectionInfo.Id.ToString());
+                            Console.WriteLine(user.Username + " Disconnected");
+                            _userContainer.users.Remove(user);
                         };
                     });
                 }
             }
         static void Main(string[] args)
         {
-            WebSockets webSockets = new WebSockets(new UserContainer());
+            WebSockets webSockets = new WebSockets(new UserContainer(), new LobbyContainer());
             webSockets.StartServer();
             Console.ReadKey();
         }

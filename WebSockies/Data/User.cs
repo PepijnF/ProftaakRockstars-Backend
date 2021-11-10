@@ -27,7 +27,6 @@ namespace WebSockies
         {
             SocketConnection = socketConnection;
             Username = _getValue("name");
-            RoomNumber = _getValue("room");
             Id = socketConnection.ConnectionInfo.Id.ToString();
         }
 

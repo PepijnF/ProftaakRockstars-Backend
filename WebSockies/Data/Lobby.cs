@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WebSockies;
 
-namespace Proftaak.Data
+namespace WebSockies.Data
 {
     public class Lobby
     {

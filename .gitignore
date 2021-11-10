@@ -386,3 +386,9 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+DAL/obj/Debug/
+
+DAL/obj/DAL.csproj.nuget.dgspec.json
+
+DAL/obj/DAL.csproj.nuget.g.props

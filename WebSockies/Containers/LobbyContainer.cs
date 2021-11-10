@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using WebSockies.Data;
 
-namespace Proftaak.Data
+namespace WebSockies.Containers
 {
     public class LobbyContainer
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace WebSockies 
+namespace WebSockies.Containers 
 {
     public class UserContainer 
     {

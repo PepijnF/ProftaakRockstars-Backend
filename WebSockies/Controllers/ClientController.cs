@@ -17,6 +17,7 @@ namespace WebSockies
            }
         }
 
+
         public void JoinLobby(User user, string[] paramStrings)
         {
             _userContainer.users.Find(u => u.Username == user.Username).RoomNumber = paramStrings[0];
@@ -34,5 +35,6 @@ namespace WebSockies
         {
             _userContainer = userContainer;
         }
+
     }
 }

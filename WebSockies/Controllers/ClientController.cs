@@ -69,11 +69,5 @@ namespace WebSockies
             }
         }
         
-        public ClientController(UserContainer userContainer, LobbyContainer lobbyContainer)
-        {
-            _userContainer = userContainer;
-            _lobbyContainer = lobbyContainer;
-        }
-
     }
 }

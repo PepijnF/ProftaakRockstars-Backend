@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using WebSockies.Containers;
+using WebSockies.Data.Models;
 
 namespace WebSockies.Logic
 {
@@ -13,6 +15,7 @@ namespace WebSockies.Logic
         private UserContainer _userContainer;
         public LobbyLogic(LobbyContainer lobbyContainer, UserContainer userContainer) {
             _lobbyContainer = lobbyContainer;
+            _userContainer = userContainer;
         }
         public List<User> GetAllUsersInRoom(string roomNumber)
         {

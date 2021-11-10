@@ -10,7 +10,8 @@ namespace WebSockies.Logic
     public class LobbyLogic
     {
         private LobbyContainer _lobbyContainer;
-        public LobbyLogic(LobbyContainer lobbyContainer) {
+        private UserContainer _userContainer;
+        public LobbyLogic(LobbyContainer lobbyContainer, UserContainer userContainer) {
             _lobbyContainer = lobbyContainer;
         }
         public List<User> GetAllUsersInRoom(string roomNumber)

@@ -56,8 +56,9 @@ namespace WebSockies
                         };
                         socket.OnClose = () =>
                         {
-                            User User = connections.Find(u => u.Id == socket.ConnectionInfo.Id.ToString());
-                            Console.WriteLine(User.Username + " Disconnected");
+                            User user = connections.Find(u => u.Id == socket.ConnectionInfo.Id.ToString());
+                            Console.WriteLine(user.Username + " Disconnected");
+                            _userContainer.users.Remove(user);
                         };
                     });
                 }

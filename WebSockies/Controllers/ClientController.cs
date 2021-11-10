@@ -21,7 +21,7 @@ namespace WebSockies
                roomUser.SocketConnection.Send(JsonSerializer.Serialize(roomMembers));
            }
         }
-        public void SendAllLobbyUsers(string roomNumber) {
+        private void SendAllLobbyUsers(string roomNumber) {
             List<User> roomMembers = _userContainer.users.FindAll(u => u.RoomNumber == roomNumber);
             ResponseModel responsemodel = new ResponseModel("UserList", "OK", roomMembers.Select(u => u.Username).ToList());
             
@@ -42,8 +42,7 @@ namespace WebSockies
             }
             else
             {
-                user.SocketConnection.Send(JsonSerializer.Serialize(new StatusResponseModel()
-                    {Status = "Failed", Content = "Lobby doesn't exist"}));
+                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "Failed", "Lobby doesn't exist")));
             }
         }
 
@@ -55,13 +54,18 @@ namespace WebSockies
 
             _userContainer.users[_userContainer.users.IndexOf(user)].RoomNumber = lobby.InviteCode;
             SendAllLobbyUsers(lobby.InviteCode);
-        } 
-
-        public void HelloWorld()
-        {
-            Console.WriteLine("Hello World!");
         }
 
+        public void StartQuiz(User user)
+        {
+            var lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.RoomNumber);
+            if (user.Id == lobby.OwnerId)
+            {
+                _lobbyContainer.Lobbies[_lobbyContainer.Lobbies.IndexOf(lobby)].IsOpen = false;
+                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Quiz started")));
+            }
+        }
+        
         public ClientController(UserContainer userContainer, LobbyContainer lobbyContainer)
         {
             _userContainer = userContainer;

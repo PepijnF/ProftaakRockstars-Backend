@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using WebSockies.Containers;
 using WebSockies.Data;
@@ -23,7 +24,7 @@ namespace WebSockies
             List<User> roomMembers = _userContainer.users.FindAll(u => u.RoomNumber == roomNumber);
             foreach (User user in roomMembers)
             {
-                user.SocketConnection.Send(JsonSerializer.Serialize(roomMembers));
+                user.SocketConnection.Send(JsonSerializer.Serialize(roomMembers.Select(u => u.Username).ToList()));
             }
         }
 
@@ -31,21 +32,24 @@ namespace WebSockies
         {
             if (_lobbyContainer.Lobbies.Exists(l => l.InviteCode == paramStrings[0]))
             {
-                _userContainer.users.Find(u => u.Username == user.Username).RoomNumber = paramStrings[0];
-                user.SocketConnection.Send(JsonSerializer.Serialize(new StatusResponseModel() {Status = "OK", Description = "Lobby joined"}));
+                _userContainer.users[_userContainer.users.IndexOf(user)].RoomNumber = paramStrings[0];
+                user.SocketConnection.Send(JsonSerializer.Serialize(new StatusResponseModel() {Status = "OK", Content = "Lobby joined"}));
                 
-                SendAllLobbyUsers(user.RoomNumber);
+                SendAllLobbyUsers(paramStrings[0]);
             }
             else
             {
                 user.SocketConnection.Send(JsonSerializer.Serialize(new StatusResponseModel()
-                    {Status = "Failed", Description = "Lobby doesn't exist"}));
+                    {Status = "Failed", Content = "Lobby doesn't exist"}));
             }
         }
-        
-        public void CreateLobby(User user)
 
-        public void CreateLobby(User user) { }
+        public void CreateLobby(User user)
+        {
+            Lobby lobby = new Lobby(user.SocketConnection.ConnectionInfo.Id.ToString(), user.Username);
+            user.SocketConnection.Send(JsonSerializer.Serialize(new StatusResponseModel() {Status = "OK", Content = lobby.InviteCode}));
+            _lobbyContainer.Lobbies.Add(lobby);
+        } 
 
         public void HelloWorld()
         {

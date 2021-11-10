@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Fleck;
 using System.Reflection;
+using System.Text.Json;
 
 namespace WebSockies
 {
@@ -32,25 +33,12 @@ namespace WebSockies
                         };
                         socket.OnMessage = message =>
                         {
-                            
-                            char[] delimChars = {':', '}', '{', '[', ']', ',', '"'};
-                            var words = message.Split(delimChars);
-        
-                            // 5 is controller
-                            // 11 is method
-                            //message converten naar class zodat deze troep niet hoeft
-                            string controller = "WebSockies" + words[5];
-                            string methodName = words[11];
-        
-                            //Get the method information using the method info class
-                            MethodInfo mi = Type.GetType(controller).GetMethod(methodName);
-        
-        
-                            //Pieter's code
-                            var controllerInst = Activator.CreateInstance(Type.GetType(controller));
-                            //Invoke the method
-                            // (null- no parameter for the method call
-                            // or you can pass the array of parameters...)
+                            var messageModel = JsonSerializer.Deserialize<MessageModel>(message);
+
+                            MethodInfo mi = Type.GetType("WebSockies." + messageModel.Controller)
+                                .GetMethod(messageModel.Method);
+
+                            var controllerInst = Activator.CreateInstance(Type.GetType("WebSockies." + messageModel.Controller));
                             mi.Invoke(controllerInst, null);
                         };
                         socket.OnClose = () =>

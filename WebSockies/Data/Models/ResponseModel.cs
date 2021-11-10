@@ -8,16 +8,16 @@ namespace WebSockies.Data.Models
 {
     public class ResponseModel
     {
-        public ResponseModel(string type, string status, string content)
+        public ResponseModel(string type, string status, object content)
         {
             Type = type;
             Status = status;
             Content = content;
 
         }
-        public string Type;
-        public string Status;
-        public object Content;
+        public string Type { get; set; }
+        public string Status { get; set; }
+        public object Content { get; set; }
 
     }
 }

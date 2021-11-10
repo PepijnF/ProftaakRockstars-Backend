@@ -9,7 +9,7 @@ namespace WebSockies.Data
     public class Answer
     {
         public string QuestionId;
-        public string QuestionString;
+        public string AnswerString;
         public bool IsCorrect;
     }
 }

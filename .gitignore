@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+DAL/obj/Debug/netcoreapp3.1/DAL.assets.cache
+Logic/obj/Debug/netcoreapp3.1/Logic.assets.cache
+
 # User-specific files
 *.rsuser
 *.suo

@@ -8,7 +8,7 @@ namespace WebSockies.Data.Models
 {
     public class ResponseModel
     {
-        public ResponseModel(string type, string status, object content)
+        public ResponseModel(string type, string status, string content)
         {
             Type = type;
             Status = status;
@@ -17,7 +17,7 @@ namespace WebSockies.Data.Models
         }
         public string Type { get; set; }
         public string Status { get; set; }
-        public object Content { get; set; }
+        public string Content { get; set; }
 
     }
 }

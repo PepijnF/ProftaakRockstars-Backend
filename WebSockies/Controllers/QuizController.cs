@@ -12,11 +12,13 @@ namespace WebSockies
         private LobbyContainer _lobbyContainer;
         private UserContainer _userContainer;
         private QuestionContainer _questionContainer;
+        private Random _random;
 
         public QuizController(LobbyContainer lobbyContainer, UserContainer userContainer, QuestionContainer questionContainer) {
             _userContainer = userContainer;
             _lobbyContainer = lobbyContainer;
             _questionContainer = questionContainer;
+            _random = new Random();
         }
 
         public void SubmitAnswer(User user, string[] answerString)
@@ -55,10 +57,16 @@ namespace WebSockies
         
         public void NextQuestion(User user)
         {
+
             _lobbyContainer.Lobbies.Find(o => o.InviteCode == user.LobbyInviteCode).HasAnswered.Clear();
-
+            User NextQuestionUser = SelectRandomUser(user);
         }
-
+        public User SelectRandomUser(User user)
+        {
+            List<User> userList = _userContainer.users.FindAll(t => t.LobbyInviteCode == user.LobbyInviteCode);
+            int random = _random.Next(0, userList.Count);
+            return userList[random];
+        }
         public void CalcScore(User user, Answer answer) {
             TimeSpan TimeToAnswer = DateTime.Now - _questionContainer.Questions.Find(h => h.Id == answer.QuestionId).TimeStarted;
             int timetoanswer = (int)Math.Round(TimeToAnswer.TotalMilliseconds);

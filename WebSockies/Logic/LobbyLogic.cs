@@ -19,18 +19,18 @@ namespace WebSockies.Logic
         }
         public List<User> GetAllUsersInRoom(string roomNumber)
         {
-            List<User> roomMembers = _userContainer.users.FindAll(u => u.RoomNumber == roomNumber);
-            return roomMembers;
+            List<User> lobbyMembers = _userContainer.users.FindAll(u => u.LobbyInviteCode == roomNumber);
+            return lobbyMembers;
 
         }
         public void SendAllLobbyUsers(string roomNumber)
         {
-            List<User> roomMembers = GetAllUsersInRoom(roomNumber);
-            ResponseModel responsemodel = new ResponseModel("UserList", "OK", roomMembers.Select(u => u.Username).ToList());
+            List<User> lobbyMembers = GetAllUsersInRoom(roomNumber);
+            ResponseModel responseModel = new ResponseModel("UserList", "OK", lobbyMembers.Select(u => u.Username).ToList());
 
-            foreach (User user in roomMembers)
+            foreach (User user in lobbyMembers)
             {
-                user.SocketConnection.Send(JsonSerializer.Serialize(responsemodel));
+                user.SocketConnection.Send(JsonSerializer.Serialize(responseModel));
             }
         }
     }

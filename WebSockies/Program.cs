@@ -32,7 +32,7 @@ namespace WebSockies
                         {
                             User user = new User(socket);
                             _userContainer.users.Add(user);
-                            Console.WriteLine("Connection opened " + user.Username + " in room " + user.RoomNumber);
+                            Console.WriteLine("Connection opened " + user.Username + " in room " + user.LobbyInviteCode);
                         };
                         socket.OnMessage = message =>
                         {

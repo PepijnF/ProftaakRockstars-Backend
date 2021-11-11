@@ -21,7 +21,7 @@ namespace WebSockies
         {
             if (_lobbyContainer.Lobbies.Exists(l => l.InviteCode == paramStrings[0]))
             {
-                _userContainer.users[_userContainer.users.IndexOf(user)].RoomNumber = paramStrings[0];
+                _userContainer.users[_userContainer.users.IndexOf(user)].LobbyInviteCode = paramStrings[0];
                 user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Lobby Joined")));
 
                 _lobbyLogic.SendAllLobbyUsers(paramStrings[0]);
@@ -38,19 +38,11 @@ namespace WebSockies
             user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("InviteCode", "OK", lobby.InviteCode)));
             _lobbyContainer.Lobbies.Add(lobby);
 
-            _userContainer.users[_userContainer.users.IndexOf(user)].RoomNumber = lobby.InviteCode;
+            _userContainer.users[_userContainer.users.IndexOf(user)].LobbyInviteCode = lobby.InviteCode;
             _lobbyLogic.SendAllLobbyUsers(lobby.InviteCode);
         }
 
-        public void StartQuiz(User user)
-        {
-            var lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.RoomNumber);
-            if (user.Id == lobby.OwnerId)
-            {
-                _lobbyContainer.Lobbies[_lobbyContainer.Lobbies.IndexOf(lobby)].IsOpen = false;
-                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Quiz started")));
-            }
-        }
+
 
     }
 

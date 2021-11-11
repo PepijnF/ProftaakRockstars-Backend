@@ -23,7 +23,7 @@ namespace WebSockies.Data
             InviteCode = rand.Next(1000,9999).ToString();
             
             Users = new List<User>();
-            Users.Add(new User(){Id = userId, Name = userName, Score = 0});
+            Users.Add(new User(){Id = userId, Username = userName, Score = 0});
 
             IsOpen = true;
         }

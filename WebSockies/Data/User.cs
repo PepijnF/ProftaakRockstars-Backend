@@ -6,10 +6,9 @@ namespace WebSockies
     public class User
     {
         public string Username { get; set; }
-        public string RoomNumber { get; set; }
+        public string LobbyInviteCode { get; set; }
         public string Id { get; set; }
         public IWebSocketConnection SocketConnection { get; set; }
-        public string Name { get; set; }
         public int Score {get; set;}
         public bool IsHost;
         private string _getValue(string key)

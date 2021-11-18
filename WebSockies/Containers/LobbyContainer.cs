@@ -11,6 +11,8 @@ namespace WebSockies.Containers
         }
         public List<Lobby> Lobbies { get; set; }
 
-        
+        public Lobby GetLobbyById(string id) {
+            return Lobbies.Find(l => l.InviteCode == id);
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace WebSockies
         }
         public void JoinLobby(User user, string[] paramStrings)
         {
-            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == paramStrings[0]);
+            Lobby lobby = _lobbyContainer.GetLobbyById(paramStrings[0]);
             User userobj = _userContainer.users[_userContainer.users.IndexOf(user)];
 
             if (lobby != null)
@@ -44,5 +44,6 @@ namespace WebSockies
             _userContainer.users[_userContainer.users.IndexOf(user)].LobbyInviteCode = lobby.InviteCode;
             _lobbyLogic.SendAllLobbyUsers(lobby.InviteCode);
         }
+        
     }
 }

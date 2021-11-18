@@ -24,20 +24,14 @@ namespace WebSockies
         public void SubmitAnswer(User user, string[] answerString)
         {
             Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
-            
-            if (!_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Contains(user))
+            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode); 
+            if (lobby != null && lobby.HasAnswered.Contains(user))
             {
-                _lobbyContainer.Lobbies.Find(k => k.InviteCode == user.LobbyInviteCode).HasAnswered.Add(user);
+                lobby.HasAnswered.Add(user);
 
-                if (_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Count == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
+                if (lobby.HasAnswered.Count == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
                 {
-                    TimeSpan test = DateTime.Now - _questionContainer.Questions.Find(h => h.Id == answer.QuestionId).TimeStarted;
-                    int timeToAnswer = (int)Math.Round(test.TotalMilliseconds);
-                    int settingsTimePerQuestion = _lobbyContainer.Lobbies.Find(f => f.InviteCode == user.LobbyInviteCode).Settings.TimePerQuestion * 1000;
-                    int baseScore = 1000;
-                    double scoreDecayPerMs = (baseScore / settingsTimePerQuestion);
-                    user.Score = (int)Math.Round(baseScore - (timeToAnswer * scoreDecayPerMs));
-                    Console.WriteLine(user.Score);
+                    user.Score = CalcScore(user, answer);
                     NextQuestion(user);
                 }
 

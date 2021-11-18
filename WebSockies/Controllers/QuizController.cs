@@ -31,7 +31,11 @@ namespace WebSockies
 
                 if (lobby.HasAnswered.Count == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
                 {
-                    user.Score = CalcScore(user, answer);
+                    var correctAnswer = lobby.Quiz.Questions[lobby.CurrentQuestion].Answers.Find(a => a.IsCorrect);
+                    if (correctAnswer == answer)
+                    {
+                        user.Score = CalcScore(user, answer);
+                    }
                     NextQuestion(user);
                 }
 

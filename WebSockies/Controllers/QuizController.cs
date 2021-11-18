@@ -55,10 +55,15 @@ namespace WebSockies
         
         public void NextQuestion(User user)
         {
-            _lobbyContainer.Lobbies.Find(o => o.InviteCode == user.LobbyInviteCode).HasAnswered.Clear();
-            User NextQuestionUser = SelectRandomUser(user);
-            _lobbyContainer.Lobbies.Find(o => o.InviteCode == user.LobbyInviteCode).Quiz.Questions[_lobbyContainer.Lobbies.Find(o => o.InviteCode == user.LobbyInviteCode).CurrentQuestion].Answered = true;
-            NextQuestionUser.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", _lobbyContainer.Lobbies.Find(o => o.InviteCode == user.LobbyInviteCode).Quiz.Questions[_lobbyContainer.Lobbies.Find(o => o.InviteCode == user.LobbyInviteCode).CurrentQuestion].ToString())));
+            var userLobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
+            if (userLobby != null)
+            {
+                userLobby.HasAnswered.Clear();
+                User NextQuestionUser = SelectRandomUser(user);
+                userLobby.Quiz.Questions[userLobby.CurrentQuestion].Answered = true;
+                NextQuestionUser.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", userLobby.Quiz.Questions[userLobby.CurrentQuestion].ToString())));
+            }
+            
         }
         public User SelectRandomUser(User user)
         {

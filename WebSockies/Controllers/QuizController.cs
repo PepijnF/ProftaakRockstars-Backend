@@ -60,8 +60,9 @@ namespace WebSockies
             {
                 userLobby.HasAnswered.Clear();
                 User NextQuestionUser = SelectRandomUser(user);
+                Question NextQuestion = userLobby.Quiz.Questions[userLobby.CurrentQuestion];
                 userLobby.Quiz.Questions[userLobby.CurrentQuestion].Answered = true;
-                NextQuestionUser.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", userLobby.Quiz.Questions[userLobby.CurrentQuestion].ToString())));
+                SendQuestion(NextQuestionUser, NextQuestion);
             }
             
         }
@@ -80,6 +81,7 @@ namespace WebSockies
             return user.Score + (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
         }
 
+
         public void GetLobbyScore(string lobbyInviteCode) {
             List<User> userList = _userContainer.users.FindAll(u => u.LobbyInviteCode == lobbyInviteCode);
             foreach (User user in userList)
@@ -87,6 +89,11 @@ namespace WebSockies
                 user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("SplashScreen","OK", userList.ToString())));
             }
         
+        }
+        public void SendQuestion(User user, Question question) {
+            user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", question.ToString())));
+
+
         }
     }
 }

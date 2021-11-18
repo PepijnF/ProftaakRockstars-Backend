@@ -19,10 +19,13 @@ namespace WebSockies
         }
         public void JoinLobby(User user, string[] paramStrings)
         {
-            if (_lobbyContainer.Lobbies.Exists(l => l.InviteCode == paramStrings[0]))
+            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == paramStrings[0]);
+            User userobj = _userContainer.users[_userContainer.users.IndexOf(user)];
+
+            if (lobby != null)
             {
-                _userContainer.users[_userContainer.users.IndexOf(user)].LobbyInviteCode = paramStrings[0];
-                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Lobby Joined")));
+                userobj.LobbyInviteCode = paramStrings[0];
+                userobj.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Lobby Joined")));
 
                 _lobbyLogic.SendAllLobbyUsers(paramStrings[0]);
             }
@@ -41,9 +44,5 @@ namespace WebSockies
             _userContainer.users[_userContainer.users.IndexOf(user)].LobbyInviteCode = lobby.InviteCode;
             _lobbyLogic.SendAllLobbyUsers(lobby.InviteCode);
         }
-
-
-
     }
-
 }

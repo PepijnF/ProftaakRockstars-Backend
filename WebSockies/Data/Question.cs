@@ -12,5 +12,6 @@ namespace WebSockies.Data
         public string QuestionString;
         public List<Answer> Answers;
         public DateTime TimeStarted;
+        public bool Answered;
     }
 }

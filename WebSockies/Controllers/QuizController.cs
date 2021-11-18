@@ -24,12 +24,12 @@ namespace WebSockies
         public void SubmitAnswer(User user, string[] answerString)
         {
             Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
-            
-            if (!_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Contains(user))
+            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode); 
+            if (lobby != null && lobby.HasAnswered.Contains(user))
             {
-                _lobbyContainer.Lobbies.Find(k => k.InviteCode == user.LobbyInviteCode).HasAnswered.Add(user);
+                lobby.HasAnswered.Add(user);
 
-                if (_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Count == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
+                if (lobby.HasAnswered.Count == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
                 {
                     TimeSpan test = DateTime.Now - _questionContainer.Questions.Find(h => h.Id == answer.QuestionId).TimeStarted;
                     int timeToAnswer = (int)Math.Round(test.TotalMilliseconds);

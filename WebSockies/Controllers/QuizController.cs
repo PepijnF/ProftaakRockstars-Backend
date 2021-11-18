@@ -60,8 +60,9 @@ namespace WebSockies
             {
                 userLobby.HasAnswered.Clear();
                 User NextQuestionUser = SelectRandomUser(user);
+                Question NextQuestion = userLobby.Quiz.Questions[userLobby.CurrentQuestion];
                 userLobby.Quiz.Questions[userLobby.CurrentQuestion].Answered = true;
-                NextQuestionUser.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", userLobby.Quiz.Questions[userLobby.CurrentQuestion].ToString())));
+                SendQuestion(NextQuestionUser, NextQuestion);
             }
             
         }
@@ -78,6 +79,11 @@ namespace WebSockies
             int basescore = 1000;
             double ScoreDecayPerMs = (basescore / SettingsTimePerQuestion);
             return user.Score + (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
+        }
+
+        public void SendQuestion(User user, Question question) {
+            user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", question.ToString())));
+
         }
     }
 }

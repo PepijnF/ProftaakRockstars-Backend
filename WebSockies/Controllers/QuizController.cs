@@ -36,7 +36,7 @@ namespace WebSockies
                     {
                         user.Score = CalcScore(user, answer);
                     }
-                    NextQuestion(user);
+                    GetLobbyScore(user.LobbyInviteCode);
                 }
 
             }
@@ -78,6 +78,15 @@ namespace WebSockies
             int basescore = 1000;
             double ScoreDecayPerMs = (basescore / SettingsTimePerQuestion);
             return user.Score + (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
+        }
+
+        public void GetLobbyScore(string lobbyInviteCode) {
+            List<User> userList = _userContainer.users.FindAll(u => u.LobbyInviteCode == lobbyInviteCode);
+            foreach (User user in userList)
+            {
+                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("SplashScreen","OK", userList.ToString())));
+            }
+        
         }
     }
 }

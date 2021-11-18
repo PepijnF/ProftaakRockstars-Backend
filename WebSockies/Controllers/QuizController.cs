@@ -44,7 +44,7 @@ namespace WebSockies
         }
         public void StartQuiz(User user)
         {
-            var lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
+            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
             if (user.Id == lobby.OwnerId)
             {
                 _lobbyContainer.Lobbies[_lobbyContainer.Lobbies.IndexOf(lobby)].IsOpen = false;
@@ -55,7 +55,7 @@ namespace WebSockies
         
         public void NextQuestion(User user)
         {
-            var userLobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
+            Lobby userLobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
             if (userLobby != null)
             {
                 userLobby.HasAnswered.Clear();

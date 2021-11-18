@@ -67,14 +67,13 @@ namespace WebSockies
             int random = _random.Next(0, userList.Count);
             return userList[random];
         }
-        public void CalcScore(User user, Answer answer) {
+        public int CalcScore(User user, Answer answer) {
             TimeSpan TimeToAnswer = DateTime.Now - _questionContainer.Questions.Find(h => h.Id == answer.QuestionId).TimeStarted;
             int timetoanswer = (int)Math.Round(TimeToAnswer.TotalMilliseconds);
             int SettingsTimePerQuestion = _lobbyContainer.Lobbies.Find(f => f.InviteCode == user.LobbyInviteCode).Settings.TimePerQuestion * 1000;
             int basescore = 1000;
             double ScoreDecayPerMs = (basescore / SettingsTimePerQuestion);
-            user.Score = user.Score + (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
-            Console.WriteLine(user.Score);
+            return user.Score + (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
         }
     }
 }

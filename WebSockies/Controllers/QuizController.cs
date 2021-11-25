@@ -36,7 +36,11 @@ namespace WebSockies
                     {
                         user.Score = +CalcScore(user.LobbyInviteCode, answer);
                     }
+
+                    GetLobbyScore(user.LobbyInviteCode);
+
                     NextQuestion(lobby);
+
                 }
 
             }
@@ -80,8 +84,17 @@ namespace WebSockies
             return (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
         }
 
-        public void SendQuestion(User user, string question) {
-            user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", question)));
+        public void GetLobbyScore(string lobbyInviteCode) {
+            List<User> userList = _userContainer.users.FindAll(u => u.LobbyInviteCode == lobbyInviteCode);
+            foreach (User user in userList)
+            {
+                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("SplashScreen","OK", JsonSerializer.Serialize(userList))));
+            }
+        
+        }
+        public void SendQuestion(User user, Question question) {
+            user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", JsonSerializer.Serialize(question) )));
+
 
         }
     }

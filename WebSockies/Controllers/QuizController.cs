@@ -34,9 +34,13 @@ namespace WebSockies
                     var correctAnswer = lobby.Quiz.Questions[lobby.CurrentQuestion].Answers.Find(a => a.IsCorrect);
                     if (correctAnswer == answer)
                     {
-                        user.Score = CalcScore(user, answer);
+                        user.Score = +CalcScore(user.LobbyInviteCode, answer);
                     }
+
                     GetLobbyScore(user.LobbyInviteCode);
+
+                    NextQuestion(lobby);
+
                 }
 
             }
@@ -49,38 +53,36 @@ namespace WebSockies
             {
                 _lobbyContainer.Lobbies[_lobbyContainer.Lobbies.IndexOf(lobby)].IsOpen = false;
                 user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Quiz started")));
-                NextQuestion(user);
+                NextQuestion(lobby);
             }
         }
         
-        public void NextQuestion(User user)
+        public void NextQuestion(Lobby lobby)
         {
-            Lobby userLobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
-            if (userLobby != null)
+            if (lobby != null)
             {
-                userLobby.HasAnswered.Clear();
-                User NextQuestionUser = SelectRandomUser(user);
-                Question NextQuestion = userLobby.Quiz.Questions[userLobby.CurrentQuestion];
-                userLobby.Quiz.Questions[userLobby.CurrentQuestion].Answered = true;
-                SendQuestion(NextQuestionUser, NextQuestion);
+                lobby.HasAnswered.Clear();
+                User NextQuestionUser = SelectRandomUserFromLobby(lobby.InviteCode);
+                string NextQuestionString = lobby.Quiz.Questions[lobby.CurrentQuestion].QuestionString;
+                lobby.Quiz.Questions[lobby.CurrentQuestion].Answered = true;
+                SendQuestion(NextQuestionUser, NextQuestionString);
             }
             
         }
-        public User SelectRandomUser(User user)
+        public User SelectRandomUserFromLobby(string lobbyInviteCode)
         {
-            List<User> userList = _userContainer.users.FindAll(t => t.LobbyInviteCode == user.LobbyInviteCode);
+            List<User> userList = _userContainer.users.FindAll(t => t.LobbyInviteCode == lobbyInviteCode);
             int random = _random.Next(0, userList.Count);
             return userList[random];
         }
-        public int CalcScore(User user, Answer answer) {
+        public int CalcScore(string lobbyInviteCode, Answer answer) {
             TimeSpan TimeToAnswer = DateTime.Now - _questionContainer.Questions.Find(h => h.Id == answer.QuestionId).TimeStarted;
             int timetoanswer = (int)Math.Round(TimeToAnswer.TotalMilliseconds);
-            int SettingsTimePerQuestion = _lobbyContainer.Lobbies.Find(f => f.InviteCode == user.LobbyInviteCode).Settings.TimePerQuestion * 1000;
+            int SettingsTimePerQuestion = _lobbyContainer.Lobbies.Find(f => f.InviteCode == lobbyInviteCode).Settings.TimePerQuestion * 1000;
             int basescore = 1000;
             double ScoreDecayPerMs = (basescore / SettingsTimePerQuestion);
-            return user.Score + (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
+            return (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
         }
-
 
         public void GetLobbyScore(string lobbyInviteCode) {
             List<User> userList = _userContainer.users.FindAll(u => u.LobbyInviteCode == lobbyInviteCode);

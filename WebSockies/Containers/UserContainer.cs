@@ -10,5 +10,9 @@ namespace WebSockies.Containers
         {
             users = new List<User>();
         }
+
+        public List<User> GetUserByLobbyID(string id) {
+            return users.FindAll(u => u.LobbyInviteCode == id);
+        }
     }
 }

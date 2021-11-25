@@ -4,6 +4,7 @@ using System.Text.Json;
 using WebSockies.Containers;
 using WebSockies.Data;
 using WebSockies.Data.Models;
+using System.Json;
 
 namespace WebSockies
 {
@@ -96,6 +97,21 @@ namespace WebSockies
             user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", JsonSerializer.Serialize(question) )));
 
 
+        }
+        public void SplashScreenScore(string lobbyCode) {
+            List<User> userList = _userContainer.GetUserByLobbyID(lobbyCode);
+            Dictionary<string, int> userScores = new Dictionary<string, int>();
+            //dit werkt mogelijk niet
+            //Pieter zegt dat het werkt
+            foreach (User user in userList)
+            {
+                userScores.Add(user.Username, user.Score);
+            }
+
+            foreach (User user in userList)
+            {
+                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("SplashScreen" , "OK", JsonSerializer.Serialize(userScores))));
+            }
         }
     }
 }

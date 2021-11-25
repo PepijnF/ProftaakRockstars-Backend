@@ -86,12 +86,12 @@ namespace WebSockies
             List<User> userList = _userContainer.users.FindAll(u => u.LobbyInviteCode == lobbyInviteCode);
             foreach (User user in userList)
             {
-                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("SplashScreen","OK", userList.ToString())));
+                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("SplashScreen","OK", JsonSerializer.Serialize(userList))));
             }
         
         }
         public void SendQuestion(User user, Question question) {
-            user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", question.ToString())));
+            user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", JsonSerializer.Serialize(question) )));
 
 
         }

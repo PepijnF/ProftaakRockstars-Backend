@@ -13,7 +13,14 @@ namespace WebSockies.Data.Models
         {
             Type = type;
             Status = status;
-            Content = JsonSerializer.Serialize(content);
+            if (content is string)
+            {
+                Content = (string)content;
+            }
+            else
+            {
+                Content = JsonSerializer.Serialize(content);
+            }
 
         }
         public string Type { get; set; }

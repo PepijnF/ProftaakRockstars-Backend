@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace WebSockies.Data.Models
 {
     public class ResponseModel
     {
-        public ResponseModel(string type, string status, string content)
+        public ResponseModel(string type, string status, object content)
         {
             Type = type;
             Status = status;
-            Content = content;
+            Content = JsonSerializer.Serialize(content);
 
         }
         public string Type { get; set; }

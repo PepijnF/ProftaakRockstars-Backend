@@ -64,9 +64,8 @@ namespace WebSockies
             {
                 lobby.HasAnswered.Clear();
                 User NextQuestionUser = SelectRandomUserFromLobby(lobby.InviteCode);
-                string NextQuestionString = lobby.Quiz.Questions[lobby.CurrentQuestion].QuestionString;
                 lobby.Quiz.Questions[lobby.CurrentQuestion].Answered = true;
-                SendQuestion(NextQuestionUser, NextQuestionString);
+                SendQuestion(NextQuestionUser, lobby.Quiz.Questions[lobby.CurrentQuestion]);
             }
             
         }

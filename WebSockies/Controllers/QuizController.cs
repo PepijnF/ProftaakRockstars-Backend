@@ -22,8 +22,8 @@ namespace WebSockies
         public void SubmitAnswer(User user, string[] answerString)
         {
             Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
-            
-            if (!_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Contains(user))
+
+            if (_lobbyContainer.Lobbies.Find(test => test.InviteCode == user.LobbyInviteCode).LobbyType.Equals(0) && !_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Contains(user))
             {
                 _lobbyContainer.Lobbies.Find(k => k.InviteCode == user.LobbyInviteCode).HasAnswered.Add(user);
 
@@ -38,10 +38,36 @@ namespace WebSockies
                     Console.WriteLine(user.Score);
                     NextQuestion(user);
                 }
-
             }
-
+            else if (_lobbyContainer.Lobbies.Find(test => test.InviteCode == user.LobbyInviteCode).LobbyType.Equals(1))
+            {
+                SubmitAnswerTradQuiz(user, answerString);
+            }
         }
+
+        public void SubmitAnswerTradQuiz(User user, string[] answerString)
+        {
+            Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
+
+            if (!_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Contains(user))
+            {
+                _lobbyContainer.Lobbies.Find(k => k.InviteCode == user.LobbyInviteCode).HasAnswered.Add(user);
+
+                if (_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Count <= 1)
+                {
+                    user.Score = 500;
+                    Console.WriteLine(user.Score);
+                    NextQuestion(user);
+                }
+                else if (_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Count > 1)
+                {
+                    user.Score = 0;
+                    Console.WriteLine(user.Score);
+                    NextQuestion(user);
+                }
+            }
+        }
+
         public void StartQuiz(User user)
         {
             var lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);

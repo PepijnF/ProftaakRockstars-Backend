@@ -17,11 +17,13 @@ namespace WebSockies
                 List<User> connections = new List<User>();
                 private UserContainer _userContainer;
                 private LobbyContainer _lobbyContainer;
+                private QuestionContainer _questionContainer;
         
-                public WebSockets(UserContainer userContainer, LobbyContainer lobbyContainer)
+                public WebSockets(UserContainer userContainer, LobbyContainer lobbyContainer, QuestionContainer questionContainer)
                 {
                     _userContainer = userContainer;
                     _lobbyContainer = lobbyContainer;
+                    _questionContainer = questionContainer;
                 }
         
                 public void StartServer()
@@ -62,7 +64,7 @@ namespace WebSockies
             }
         static void Main(string[] args)
         {
-            WebSockets webSockets = new WebSockets(new UserContainer(), new LobbyContainer());
+            WebSockets webSockets = new WebSockets(new UserContainer(), new LobbyContainer(), new QuestionContainer());
 
             webSockets.StartServer();
             Console.ReadKey();

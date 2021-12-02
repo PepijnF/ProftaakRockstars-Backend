@@ -15,6 +15,9 @@ namespace WebSockies.Data
         public bool IsOpen { get; set; }
         public List<User> HasAnswered { get; set;} 
         public LobbySettings Settings { get; set; }
+
+        public int LobbyType { get; set; }
+
         public Quiz Quiz { get; set; }
 
         public int CurrentQuestion
@@ -33,6 +36,7 @@ namespace WebSockies.Data
             }
         }
 
+
         public Lobby(string userId, string userName)
         {
             Id = Guid.NewGuid().ToString();
@@ -43,6 +47,8 @@ namespace WebSockies.Data
             
             Users = new List<User>();
             Users.Add(new User(){Id = userId, Username = userName, Score = 0});
+
+            LobbyType = 0;
 
             IsOpen = true;
         }

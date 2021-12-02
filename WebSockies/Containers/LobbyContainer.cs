@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.Text.Json;
 using WebSockies.Data;
+using WebSockies.Data.Models;
+using WebSockies.Logic;
 
 namespace WebSockies.Containers
 {
@@ -13,6 +16,13 @@ namespace WebSockies.Containers
 
         public Lobby GetLobbyById(string id) {
             return Lobbies.Find(l => l.InviteCode == id);
+        }
+
+        public void RemoveLobby(Lobby lobby)
+        {
+            WebSockiesUtils.Broadcast(lobby, new ResponseModel("LobbyResponse", "Failed", "Owner left the lobby"));
+            
+            Lobbies.Remove(lobby);
         }
     }
 }

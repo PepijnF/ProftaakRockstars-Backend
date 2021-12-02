@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using WebSockies;
 
 namespace WebSockies.Data
@@ -14,7 +15,28 @@ namespace WebSockies.Data
         public bool IsOpen { get; set; }
         public List<User> HasAnswered { get; set;} 
         public LobbySettings Settings { get; set; }
+
         public int LobbyType { get; set; }
+
+        public Quiz Quiz { get; set; }
+
+        public int CurrentQuestion
+        {
+            get
+            {
+                int num = 0;
+                Quiz.Questions.ForEach(q =>
+                {
+                    if (q.Answered == true)
+                    {
+                        num += 1;
+                    }
+                });
+                return num;
+            }
+        }
+
+
         public Lobby(string userId, string userName)
         {
             Id = Guid.NewGuid().ToString();

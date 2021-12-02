@@ -4,6 +4,7 @@ using System.Text.Json;
 using WebSockies.Containers;
 using WebSockies.Data;
 using WebSockies.Data.Models;
+using System.Json;
 
 namespace WebSockies
 {
@@ -12,31 +13,40 @@ namespace WebSockies
         private LobbyContainer _lobbyContainer;
         private UserContainer _userContainer;
         private QuestionContainer _questionContainer;
+        private Random _random;
 
         public QuizController(LobbyContainer lobbyContainer, UserContainer userContainer, QuestionContainer questionContainer) {
             _userContainer = userContainer;
             _lobbyContainer = lobbyContainer;
             _questionContainer = questionContainer;
+            _random = new Random();
         }
 
         public void SubmitAnswer(User user, string[] answerString)
         {
             Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
 
-            if (_lobbyContainer.Lobbies.Find(test => test.InviteCode == user.LobbyInviteCode).LobbyType.Equals(0) && !_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Contains(user))
-            {
-                _lobbyContainer.Lobbies.Find(k => k.InviteCode == user.LobbyInviteCode).HasAnswered.Add(user);
 
-                if (_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Count == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
+            if (_lobbyContainer.Lobbies.Find(test => test.InviteCode == user.LobbyInviteCode).LobbyType.Equals(0) && !_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Contains(user))
+
+            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode); 
+            if (lobby != null && lobby.HasAnswered.Contains(user))
+
+            {
+                lobby.HasAnswered.Add(user);
+
+                if (lobby.HasAnswered.Count == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
                 {
-                    TimeSpan test = DateTime.Now - _questionContainer.Questions.Find(h => h.Id == answer.QuestionId).TimeStarted;
-                    int timeToAnswer = (int)Math.Round(test.TotalMilliseconds);
-                    int settingsTimePerQuestion = _lobbyContainer.Lobbies.Find(f => f.InviteCode == user.LobbyInviteCode).Settings.TimePerQuestion * 1000;
-                    int baseScore = 1000;
-                    double scoreDecayPerMs = (baseScore / settingsTimePerQuestion);
-                    user.Score = (int)Math.Round(baseScore - (timeToAnswer * scoreDecayPerMs));
-                    Console.WriteLine(user.Score);
-                    NextQuestion(user);
+                    var correctAnswer = lobby.Quiz.Questions[lobby.CurrentQuestion].Answers.Find(a => a.IsCorrect);
+                    if (correctAnswer == answer)
+                    {
+                        user.Score = +CalcScore(user.LobbyInviteCode, answer);
+                    }
+
+                    GetLobbyScore(user.LobbyInviteCode);
+
+                    NextQuestion(lobby);
+
                 }
             }
             else if (_lobbyContainer.Lobbies.Find(test => test.InviteCode == user.LobbyInviteCode).LobbyType.Equals(1))
@@ -70,29 +80,67 @@ namespace WebSockies
 
         public void StartQuiz(User user)
         {
-            var lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
+            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
             if (user.Id == lobby.OwnerId)
             {
                 _lobbyContainer.Lobbies[_lobbyContainer.Lobbies.IndexOf(lobby)].IsOpen = false;
                 user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Quiz started")));
-                NextQuestion(user);
+                NextQuestion(lobby);
             }
         }
         
-        public void NextQuestion(User user)
+        public void NextQuestion(Lobby lobby)
         {
-            _lobbyContainer.Lobbies.Find(o => o.InviteCode == user.LobbyInviteCode).HasAnswered.Clear();
-
+            if (lobby != null)
+            {
+                lobby.HasAnswered.Clear();
+                User NextQuestionUser = SelectRandomUserFromLobby(lobby.InviteCode);
+                lobby.Quiz.Questions[lobby.CurrentQuestion].Answered = true;
+                SendQuestion(NextQuestionUser, lobby.Quiz.Questions[lobby.CurrentQuestion]);
+            }
         }
-
-        public void CalcScore(User user, Answer answer) {
+        public User SelectRandomUserFromLobby(string lobbyInviteCode)
+        {
+            List<User> userList = _userContainer.users.FindAll(t => t.LobbyInviteCode == lobbyInviteCode);
+            int random = _random.Next(0, userList.Count);
+            return userList[random];
+        }
+        public int CalcScore(string lobbyInviteCode, Answer answer) {
             TimeSpan TimeToAnswer = DateTime.Now - _questionContainer.Questions.Find(h => h.Id == answer.QuestionId).TimeStarted;
             int timetoanswer = (int)Math.Round(TimeToAnswer.TotalMilliseconds);
-            int SettingsTimePerQuestion = _lobbyContainer.Lobbies.Find(f => f.InviteCode == user.LobbyInviteCode).Settings.TimePerQuestion * 1000;
+            int SettingsTimePerQuestion = _lobbyContainer.Lobbies.Find(f => f.InviteCode == lobbyInviteCode).Settings.TimePerQuestion * 1000;
             int basescore = 1000;
             double ScoreDecayPerMs = (basescore / SettingsTimePerQuestion);
-            user.Score = user.Score + (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
-            Console.WriteLine(user.Score);
+            return (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
+        }
+
+        public void GetLobbyScore(string lobbyInviteCode) {
+            List<User> userList = _userContainer.users.FindAll(u => u.LobbyInviteCode == lobbyInviteCode);
+            foreach (User user in userList)
+            {
+                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("SplashScreen","OK", JsonSerializer.Serialize(userList))));
+            }
+        
+        }
+        public void SendQuestion(User user, Question question) {
+            user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", JsonSerializer.Serialize(question) )));
+
+
+        }
+        public void SplashScreenScore(string lobbyCode) {
+            List<User> userList = _userContainer.GetUserByLobbyID(lobbyCode);
+            Dictionary<string, int> userScores = new Dictionary<string, int>();
+            //dit werkt mogelijk niet
+            //Pieter zegt dat het werkt
+            foreach (User user in userList)
+            {
+                userScores.Add(user.Username, user.Score);
+            }
+
+            foreach (User user in userList)
+            {
+                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("SplashScreen" , "OK", JsonSerializer.Serialize(userScores))));
+            }
         }
     }
 }

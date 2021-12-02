@@ -46,5 +46,11 @@ namespace WebSockies.Data
 
             IsOpen = true;
         }
+
+        public void NewOwnerRandom()
+        {
+            User user = Users[new Random().Next(0, Users.Count - 1)];
+            Users.Insert(0, user);
+        }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using WebSockies.Data;
 using WebSockies.Data.Models;
+using WebSockies.Logic;
 
 namespace WebSockies.Containers
 {
@@ -19,10 +20,7 @@ namespace WebSockies.Containers
 
         public void RemoveLobby(Lobby lobby)
         {
-            foreach (var user in lobby.Users)
-            {
-                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "Failed", "Owner has left the lobby")));
-            }
+            WebSockiesUtils.Broadcast(lobby, new ResponseModel("LobbyResponse", "Failed", "Owner left the lobby"));
             
             Lobbies.Remove(lobby);
         }

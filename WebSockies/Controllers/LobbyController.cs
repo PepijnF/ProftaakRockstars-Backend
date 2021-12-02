@@ -48,10 +48,7 @@ namespace WebSockies
             _lobbyLogic.SendAllLobbyUsers(lobby.InviteCode);
         }
 
-        public void Broadcast(string lobbyCode, string message)
-        {
-            _lobbyContainer.GetLobbyById(lobbyCode).Users.ForEach(u => u.SocketConnection.Send(message));
-        }
+        
         
     }
 }

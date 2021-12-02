@@ -19,7 +19,7 @@ namespace WebSockies.Logic
         }
         public List<User> GetAllUsersInRoom(string roomNumber)
         {
-            List<User> lobbyMembers = _userContainer.users.FindAll(u => u.LobbyInviteCode == roomNumber);
+            List<User> lobbyMembers = _lobbyContainer.Lobbies.Find(l => l.InviteCode == roomNumber).Users;
             return lobbyMembers;
 
         }

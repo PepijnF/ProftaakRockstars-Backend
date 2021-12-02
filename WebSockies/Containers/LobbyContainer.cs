@@ -14,5 +14,12 @@ namespace WebSockies.Containers
         public Lobby GetLobbyById(string id) {
             return Lobbies.Find(l => l.InviteCode == id);
         }
+
+        public void RemoveLobby(Lobby lobby)
+        {
+            // TODO send lobby closed message
+
+            Lobbies.Remove(lobby);
+        }
     }
 }

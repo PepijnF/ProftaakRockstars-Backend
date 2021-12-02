@@ -56,6 +56,8 @@ namespace WebSockies
                             User user = _userContainer.users.Find(u => u.Id == socket.ConnectionInfo.Id.ToString());
                             Console.WriteLine(user.Username + " Disconnected");
                             _userContainer.users.Remove(user);
+                            _lobbyContainer.Lobbies.Find(l => l.OwnerId == user.SocketConnection.ConnectionInfo.Id.ToString());
+                            _lobbyContainer.
                         };
                     });
                 }

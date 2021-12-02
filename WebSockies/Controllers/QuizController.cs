@@ -27,8 +27,7 @@ namespace WebSockies
             Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
             Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
             
-            if (lobby.LobbyType.Equals(0) && lobby.HasAnswered.Contains(user))
-
+            if (lobby.Settings.LobbyType == LobbySettings.LobbyTypeEnum.Standard && !lobby.HasAnswered.Contains(user))
             {
                 lobby.HasAnswered.Add(user);
 
@@ -46,31 +45,13 @@ namespace WebSockies
 
                 }
             }
-            else if (_lobbyContainer.Lobbies.Find(test => test.InviteCode == user.LobbyInviteCode).LobbyType.Equals(1))
+            else if (lobby.Settings.LobbyType == LobbySettings.LobbyTypeEnum.Traditional && !lobby.HasAnswered.Contains(user))
             {
-                SubmitAnswerTradQuiz(user, answerString);
-            }
-        }
+                lobby.HasAnswered.Add(user);
 
-        public void SubmitAnswerTradQuiz(User user, string[] answerString)
-        {
-            Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
-            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
-
-            if (!_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Contains(user))
-            {
-                _lobbyContainer.Lobbies.Find(k => k.InviteCode == user.LobbyInviteCode).HasAnswered.Add(user);
-
-                if (_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Count <= 1)
+                if (lobby.HasAnswered.Count <= 1)
                 {
-                    user.Score = 500;
-                    Console.WriteLine(user.Score);
-                    NextQuestion(lobby);
-                }
-                else if (_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Count > 1)
-                {
-                    user.Score = 0;
-                    Console.WriteLine(user.Score);
+                    user.Score += 500;
                     NextQuestion(lobby);
                 }
             }

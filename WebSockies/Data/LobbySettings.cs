@@ -15,6 +15,14 @@ namespace WebSockies.Data
         
         public List<Question> Questions;
         public int TimePerQuestion;
+        public LobbyTypeEnum LobbyType;
+
+
+        public enum LobbyTypeEnum
+        {
+            Standard,
+            Traditional
+        }
         
 
     }

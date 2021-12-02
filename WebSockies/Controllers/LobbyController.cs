@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using WebSockies.Containers;
 using WebSockies.Data;
@@ -24,6 +25,7 @@ namespace WebSockies
                 _userContainer.users[_userContainer.users.IndexOf(user)].LobbyInviteCode = paramStrings[0];
                 user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Lobby Joined")));
 
+                Console.WriteLine(user.Username + " joined lobby " + user.LobbyInviteCode);
                 _lobbyLogic.SendAllLobbyUsers(paramStrings[0]);
             }
             else
@@ -38,6 +40,7 @@ namespace WebSockies
             user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("InviteCode", "OK", lobby.InviteCode)));
             _lobbyContainer.Lobbies.Add(lobby);
 
+            Console.WriteLine(user.Username + " created a new lobby with invite code " + lobby.InviteCode);
             _userContainer.users[_userContainer.users.IndexOf(user)].LobbyInviteCode = lobby.InviteCode;
             _lobbyLogic.SendAllLobbyUsers(lobby.InviteCode);
         }

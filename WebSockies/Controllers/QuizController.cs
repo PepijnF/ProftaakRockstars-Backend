@@ -63,7 +63,6 @@ namespace WebSockies
                 userLobby.Quiz.Questions[userLobby.CurrentQuestion].Answered = true;
                 NextQuestionUser.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", userLobby.Quiz.Questions[userLobby.CurrentQuestion].ToString())));
             }
-            
         }
         public User SelectRandomUser(User user)
         {

@@ -25,12 +25,9 @@ namespace WebSockies
         public void SubmitAnswer(User user, string[] answerString)
         {
             Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
-
-
-            if (_lobbyContainer.Lobbies.Find(test => test.InviteCode == user.LobbyInviteCode).LobbyType.Equals(0) && !_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Contains(user))
-
-            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode); 
-            if (lobby != null && lobby.HasAnswered.Contains(user))
+            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
+            
+            if (lobby.LobbyType.Equals(0) && lobby.HasAnswered.Contains(user))
 
             {
                 lobby.HasAnswered.Add(user);
@@ -58,6 +55,7 @@ namespace WebSockies
         public void SubmitAnswerTradQuiz(User user, string[] answerString)
         {
             Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
+            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
 
             if (!_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Contains(user))
             {
@@ -67,13 +65,13 @@ namespace WebSockies
                 {
                     user.Score = 500;
                     Console.WriteLine(user.Score);
-                    NextQuestion(user);
+                    NextQuestion(lobby);
                 }
                 else if (_lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode).HasAnswered.Count > 1)
                 {
                     user.Score = 0;
                     Console.WriteLine(user.Score);
-                    NextQuestion(user);
+                    NextQuestion(lobby);
                 }
             }
         }

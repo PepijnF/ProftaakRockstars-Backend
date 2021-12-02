@@ -27,7 +27,7 @@ namespace WebSockies
             Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
             Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
             
-            if ((int)lobby.Settings.LobbyType == 0 && !lobby.HasAnswered.Contains(user))
+            if (lobby.Settings.LobbyType == LobbySettings.LobbyTypeEnum.Standard && !lobby.HasAnswered.Contains(user))
             {
                 lobby.HasAnswered.Add(user);
 
@@ -45,7 +45,7 @@ namespace WebSockies
 
                 }
             }
-            else if ((int)lobby.Settings.LobbyType == 1 && !lobby.HasAnswered.Contains(user))
+            else if (lobby.Settings.LobbyType == LobbySettings.LobbyTypeEnum.Traditional && !lobby.HasAnswered.Contains(user))
             {
                 lobby.HasAnswered.Add(user);
 

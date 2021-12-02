@@ -20,8 +20,8 @@ namespace WebSockies.Data
 
         public enum LobbyTypeEnum
         {
-            Standard = 0,
-            Traditional = 1
+            Standard,
+            Traditional
         }
         
 

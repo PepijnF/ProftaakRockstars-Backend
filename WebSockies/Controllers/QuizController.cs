@@ -31,7 +31,8 @@ namespace WebSockies
             {
                 lobby.HasAnswered.Add(user);
 
-                if (lobby.HasAnswered.Count == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
+                // + 1 because there is one person with the question and no way to answer
+                if (lobby.HasAnswered.Count + 1 == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
                 {
                     var correctAnswer = lobby.Quiz.Questions[lobby.CurrentQuestion].Answers.Find(a => a.IsCorrect);
                     if (correctAnswer == answer)
@@ -75,9 +76,10 @@ namespace WebSockies
                 lobby.HasAnswered.Clear();
                 User NextQuestionUser = SelectRandomUserFromLobby(lobby.InviteCode);
                 lobby.Quiz.Questions[lobby.CurrentQuestion].Answered = true;
-                SendQuestion(NextQuestionUser, lobby.Quiz.Questions[lobby.CurrentQuestion]);
+                SendQuestion(NextQuestionUser, lobby.Quiz.Questions[lobby.CurrentQuestion], lobby);
             }
         }
+        
         public User SelectRandomUserFromLobby(string lobbyInviteCode)
         {
             List<User> userList = _userContainer.users.FindAll(t => t.LobbyInviteCode == lobbyInviteCode);
@@ -101,11 +103,19 @@ namespace WebSockies
             }
         
         }
-        public void SendQuestion(User user, Question question) {
-            user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", JsonSerializer.Serialize(question) )));
-
-
+        public void SendQuestion(User questionUser, Question question, Lobby lobby) {
+            questionUser.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("QuestionString", "OK", JsonSerializer.Serialize(question.QuestionString) )));
+            List<User> users = lobby.Users;
+            foreach (var user in users)
+            {
+                if (user.Id != questionUser.Id)
+                {
+                    user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Answers", "OK",
+                        JsonSerializer.Serialize(question.Answers))));
+                }
+            }
         }
+        
         public void SplashScreenScore(string lobbyCode) {
             List<User> userList = _userContainer.GetUserByLobbyID(lobbyCode);
             Dictionary<string, int> userScores = new Dictionary<string, int>();

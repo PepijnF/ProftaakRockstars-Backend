@@ -35,9 +35,9 @@ namespace WebSockies
                 if (lobby.HasAnswered.Count + 1 == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
                 {
                     var correctAnswer = lobby.Quiz.Questions[lobby.CurrentQuestion].Answers.Find(a => a.IsCorrect);
-                    if (correctAnswer == answer)
+                    if (correctAnswer.AnswerString == answer.AnswerString)
                     {
-                        user.Score = +CalcScore(user.LobbyInviteCode, answer);
+                        user.Score = +CalcScore(lobby, answer);
                     }
 
                     GetLobbyScore(user.LobbyInviteCode);
@@ -86,10 +86,13 @@ namespace WebSockies
             int random = _random.Next(0, userList.Count);
             return userList[random];
         }
-        public int CalcScore(string lobbyInviteCode, Answer answer) {
-            TimeSpan TimeToAnswer = DateTime.Now - _questionContainer.Questions.Find(h => h.Id == answer.QuestionId).TimeStarted;
+        public int CalcScore(Lobby lobby, Answer answer)
+        {
+            Question question = lobby.Quiz.Questions[lobby.CurrentQuestion];
+            
+            TimeSpan TimeToAnswer = DateTime.Now - question.TimeStarted;
             int timetoanswer = (int)Math.Round(TimeToAnswer.TotalMilliseconds);
-            int SettingsTimePerQuestion = _lobbyContainer.Lobbies.Find(f => f.InviteCode == lobbyInviteCode).Settings.TimePerQuestion * 1000;
+            int SettingsTimePerQuestion =lobby.Settings.TimePerQuestion * 1000;
             int basescore = 1000;
             double ScoreDecayPerMs = (basescore / SettingsTimePerQuestion);
             return (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));

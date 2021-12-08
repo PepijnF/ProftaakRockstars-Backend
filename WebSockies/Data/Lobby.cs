@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using WebSockies;
+using WebSockies.Logic;
 
 namespace WebSockies.Data
 {
@@ -35,20 +36,25 @@ namespace WebSockies.Data
         }
 
 
-        public Lobby(string userId, string userName)
+        public Lobby(User user)
         {
             Id = Guid.NewGuid().ToString();
-            OwnerId = userId;
+            OwnerId = user.Id;
 
             Random rand = new Random();
             InviteCode = rand.Next(1000,9999).ToString();
             
             Users = new List<User>();
-            Users.Add(new User(){Id = userId, Username = userName, Score = 0});
+            Users.Add(user);
 
-            Settings.LobbyType = LobbySettings.LobbyTypeEnum.Standard;
+            Settings = new LobbySettings() { LobbyType = LobbySettings.LobbyTypeEnum.Standard };
             
             IsOpen = true;
+
+            HasAnswered = new List<User>();
+            
+            // TODO change this
+            Quiz = QuizMaster.GetQuiz();
         }
 
         public void NewOwnerRandom()

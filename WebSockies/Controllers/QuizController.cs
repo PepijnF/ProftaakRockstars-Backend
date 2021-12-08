@@ -15,23 +15,24 @@ namespace WebSockies
         private QuestionContainer _questionContainer;
         private Random _random;
 
-        public QuizController(LobbyContainer lobbyContainer, UserContainer userContainer, QuestionContainer questionContainer) {
+        public QuizController(UserContainer userContainer, LobbyContainer lobbyContainer, QuestionContainer questionContainer) {
             _userContainer = userContainer;
             _lobbyContainer = lobbyContainer;
             _questionContainer = questionContainer;
             _random = new Random();
         }
 
-        public void SubmitAnswer(User user, string[] answerString)
+        public void SubmitAnswer(User user, object[] answers)
         {
-            Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
+            Answer answer = JsonSerializer.Deserialize<Answer>(answers[0].ToString());
             Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
             
             if (lobby.Settings.LobbyType == LobbySettings.LobbyTypeEnum.Standard && !lobby.HasAnswered.Contains(user))
             {
                 lobby.HasAnswered.Add(user);
 
-                if (lobby.HasAnswered.Count == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
+                // + 1 because there is one person with the question and no way to answer
+                if (lobby.HasAnswered.Count + 1 == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
                 {
                     var correctAnswer = lobby.Quiz.Questions[lobby.CurrentQuestion].Answers.Find(a => a.IsCorrect);
                     if (correctAnswer == answer)
@@ -74,10 +75,11 @@ namespace WebSockies
             {
                 lobby.HasAnswered.Clear();
                 User NextQuestionUser = SelectRandomUserFromLobby(lobby.InviteCode);
+                SendQuestion(NextQuestionUser, lobby.Quiz.Questions[lobby.CurrentQuestion], lobby);
                 lobby.Quiz.Questions[lobby.CurrentQuestion].Answered = true;
-                SendQuestion(NextQuestionUser, lobby.Quiz.Questions[lobby.CurrentQuestion]);
             }
         }
+        
         public User SelectRandomUserFromLobby(string lobbyInviteCode)
         {
             List<User> userList = _userContainer.users.FindAll(t => t.LobbyInviteCode == lobbyInviteCode);
@@ -101,11 +103,19 @@ namespace WebSockies
             }
         
         }
-        public void SendQuestion(User user, Question question) {
-            user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Question", "OK", JsonSerializer.Serialize(question) )));
-
-
+        public void SendQuestion(User questionUser, Question question, Lobby lobby) {
+            questionUser.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("QuestionString", "OK", JsonSerializer.Serialize(question.QuestionString) )));
+            List<User> users = lobby.Users;
+            foreach (var user in users)
+            {
+                if (user.Id != questionUser.Id)
+                {
+                    user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Answers", "OK",
+                        question.Serialize())));
+                }
+            }
         }
+        
         public void SplashScreenScore(string lobbyCode) {
             List<User> userList = _userContainer.GetUserByLobbyID(lobbyCode);
             Dictionary<string, int> userScores = new Dictionary<string, int>();

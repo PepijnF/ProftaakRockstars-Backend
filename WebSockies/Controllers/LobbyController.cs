@@ -18,18 +18,20 @@ namespace WebSockies
             _lobbyLogic = new LobbyLogic(_lobbyContainer, _userContainer);
         
         }
-        public void JoinLobby(User user, string[] paramStrings)
+        public void JoinLobby(User user, object[] param)
         {
-            Lobby lobby = _lobbyContainer.GetLobbyById(paramStrings[0]);
+            string paramStrings = param[0].ToString();
+            Lobby lobby = _lobbyContainer.GetLobbyById(paramStrings);
             User userobj = _userContainer.users[_userContainer.users.IndexOf(user)];
 
             if (lobby != null)
             {
-                userobj.LobbyInviteCode = paramStrings[0];
+                userobj.LobbyInviteCode = paramStrings;
                 userobj.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Lobby Joined")));
 
                 Console.WriteLine(user.Username + " joined lobby " + user.LobbyInviteCode);
-                _lobbyLogic.SendAllLobbyUsers(paramStrings[0]);
+                lobby.Users.Add(userobj);
+                _lobbyLogic.SendAllLobbyUsers(paramStrings);
             }
             else
             {
@@ -39,12 +41,13 @@ namespace WebSockies
 
         public void CreateLobby(User user)
         {
-            Lobby lobby = new Lobby(user.SocketConnection.ConnectionInfo.Id.ToString(), user.Username);
+            Lobby lobby = new Lobby(user);
             user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("InviteCode", "OK", lobby.InviteCode)));
             _lobbyContainer.Lobbies.Add(lobby);
 
             Console.WriteLine(user.Username + " created a new lobby with invite code " + lobby.InviteCode);
             _userContainer.users[_userContainer.users.IndexOf(user)].LobbyInviteCode = lobby.InviteCode;
+            lobby.Users.Add(user);
             _lobbyLogic.SendAllLobbyUsers(lobby.InviteCode);
         }
 

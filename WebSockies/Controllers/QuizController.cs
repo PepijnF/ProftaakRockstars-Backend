@@ -15,16 +15,16 @@ namespace WebSockies
         private QuestionContainer _questionContainer;
         private Random _random;
 
-        public QuizController(LobbyContainer lobbyContainer, UserContainer userContainer, QuestionContainer questionContainer) {
+        public QuizController(UserContainer userContainer, LobbyContainer lobbyContainer, QuestionContainer questionContainer) {
             _userContainer = userContainer;
             _lobbyContainer = lobbyContainer;
             _questionContainer = questionContainer;
             _random = new Random();
         }
 
-        public void SubmitAnswer(User user, string[] answerString)
+        public void SubmitAnswer(User user, object[] answers)
         {
-            Answer answer = JsonSerializer.Deserialize<Answer>(answerString[0]);
+            Answer answer = JsonSerializer.Deserialize<Answer>(answers[0].ToString());
             Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
             
             if (lobby.Settings.LobbyType == LobbySettings.LobbyTypeEnum.Standard && !lobby.HasAnswered.Contains(user))
@@ -75,8 +75,8 @@ namespace WebSockies
             {
                 lobby.HasAnswered.Clear();
                 User NextQuestionUser = SelectRandomUserFromLobby(lobby.InviteCode);
-                lobby.Quiz.Questions[lobby.CurrentQuestion].Answered = true;
                 SendQuestion(NextQuestionUser, lobby.Quiz.Questions[lobby.CurrentQuestion], lobby);
+                lobby.Quiz.Questions[lobby.CurrentQuestion].Answered = true;
             }
         }
         
@@ -111,7 +111,7 @@ namespace WebSockies
                 if (user.Id != questionUser.Id)
                 {
                     user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Answers", "OK",
-                        JsonSerializer.Serialize(question.Answers))));
+                        question.Serialize())));
                 }
             }
         }

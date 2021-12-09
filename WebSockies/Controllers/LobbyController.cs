@@ -32,7 +32,7 @@ namespace WebSockies
                 Console.WriteLine(user.Username + " joined lobby " + user.LobbyInviteCode);
 
                 lobby.Users.Add(user);
-                _lobbyLogic.SendAllLobbyUsers(paramStrings[0]);
+                _lobbyLogic.SendAllLobbyUsers(paramStrings);
 
             }
             else

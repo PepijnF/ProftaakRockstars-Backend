@@ -24,7 +24,7 @@ namespace WebSockies
 
         public void SubmitAnswer(User user, object[] answers)
         {
-            Answer answer = JsonSerializer.Deserialize<Answer>(answers[0].ToString());
+            Answer answer = new Answer() { AnswerString = answers[0].ToString() };
             Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == user.LobbyInviteCode);
             
             if (lobby.Settings.LobbyType == LobbySettings.LobbyTypeEnum.Standard && !lobby.HasAnswered.Contains(user))

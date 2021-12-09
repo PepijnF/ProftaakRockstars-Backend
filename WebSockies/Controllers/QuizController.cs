@@ -42,7 +42,7 @@ namespace WebSockies
 
                     GetLobbyScore(user.LobbyInviteCode);
 
-                    NextQuestion(lobby);
+                    NextQuestion(user.LobbyInviteCode);
 
                 }
             }
@@ -53,7 +53,7 @@ namespace WebSockies
                 if (lobby.HasAnswered.Count <= 1)
                 {
                     user.Score += 500;
-                    NextQuestion(lobby);
+                    NextQuestion(user.LobbyInviteCode);
                 }
             }
         }
@@ -67,12 +67,13 @@ namespace WebSockies
                 user.SocketConnection.Send(
                     JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Quiz started")));
                 Console.WriteLine("Quiz has been started");
-                NextQuestion(lobby);
+                NextQuestion(user.LobbyInviteCode);
             }
         }
         
-        public void NextQuestion(Lobby lobby)
+        public void NextQuestion(string LobbyCode)
         {
+            Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.InviteCode == LobbyCode);
             if (lobby != null)
             {
                 lobby.HasAnswered.Clear();
@@ -81,6 +82,7 @@ namespace WebSockies
                 lobby.Quiz.Questions[lobby.CurrentQuestion].Answered = true;
             }
         }
+        
         
         public User SelectRandomUserFromLobby(string lobbyInviteCode)
         {
@@ -141,5 +143,6 @@ namespace WebSockies
                 user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("SplashScreen" , "OK", JsonSerializer.Serialize(userScores))));
             }
         }
+
     }
 }

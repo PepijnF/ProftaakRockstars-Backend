@@ -66,6 +66,7 @@ namespace WebSockies
                 _lobbyContainer.Lobbies[_lobbyContainer.Lobbies.IndexOf(lobby)].IsOpen = false;
                 user.SocketConnection.Send(
                     JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Quiz started")));
+                Console.WriteLine("Quiz has been started");
                 NextQuestion(lobby);
             }
         }

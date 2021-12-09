@@ -61,6 +61,7 @@ namespace WebSockies.Data
         {
             User user = Users[new Random().Next(0, Users.Count - 1)];
             Users.Insert(0, user);
+            OwnerId = user.Id;
         }
     }
 }

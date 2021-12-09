@@ -30,8 +30,10 @@ namespace WebSockies
                 userobj.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Lobby Joined")));
 
                 Console.WriteLine(user.Username + " joined lobby " + user.LobbyInviteCode);
-                lobby.Users.Add(userobj);
-                _lobbyLogic.SendAllLobbyUsers(paramStrings);
+
+                lobby.Users.Add(user);
+                _lobbyLogic.SendAllLobbyUsers(paramStrings[0]);
+
             }
             else
             {

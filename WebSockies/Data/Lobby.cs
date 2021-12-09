@@ -57,11 +57,23 @@ namespace WebSockies.Data
             Quiz = QuizMaster.GetQuiz();
         }
 
-        public void NewOwnerRandom()
+        public bool NewOwnerRandom()
         {
-            User user = Users[new Random().Next(0, Users.Count - 1)];
-            Users.Insert(0, user);
-            OwnerId = user.Id;
+            if (Users.Count > 0)
+            {
+                User user = Users[new Random().Next(0, Users.Count - 1)];
+                Users.Insert(0, user);
+                OwnerId = user.Id;
+                return true;
+            }
+            else
+            {
+                return false;
+            
+            
+            }
+            
         }
+        
     }
 }

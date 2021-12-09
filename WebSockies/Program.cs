@@ -39,29 +39,38 @@ namespace WebSockies
                         };
                         socket.OnMessage = message =>
                         {
-                            var messageModel = JsonSerializer.Deserialize<MessageModel>(message.Replace("\n", "").Replace("\t", ""));
-
-                            MethodInfo mi = Type.GetType("WebSockies." + messageModel.Controller)
-                                .GetMethod(messageModel.Method);
-
-                            object? controllerInst;
-
-                            if (messageModel.Controller == "QuizController")
+                            try
                             {
-                                controllerInst = Activator.CreateInstance(Type.GetType("WebSockies." + messageModel.Controller), _userContainer, _lobbyContainer, _questionContainer);
+                                var messageModel = JsonSerializer.Deserialize<MessageModel>(message.Replace("\n", "").Replace("\t", ""));
+
+                                MethodInfo mi = Type.GetType("WebSockies." + messageModel.Controller)
+                                    .GetMethod(messageModel.Method);
+
+                                object? controllerInst;
+
+                                if (messageModel.Controller == "QuizController")
+                                {
+                                    controllerInst = Activator.CreateInstance(Type.GetType("WebSockies." + messageModel.Controller), _userContainer, _lobbyContainer, _questionContainer);
+                                }
+                                else
+                                {
+                                    controllerInst = Activator.CreateInstance(Type.GetType("WebSockies." + messageModel.Controller), _userContainer, _lobbyContainer);
+                                }
+
+                                List<Object> parameters = new List<Object>();
+                                parameters.Add(_userContainer.users.Find(u => u.SocketConnection.ConnectionInfo.Id == socket.ConnectionInfo.Id));
+                                if (messageModel.Parameters.Length != 0)
+                                {
+                                    parameters.Add(messageModel.Parameters);
+                                }
+                                mi.Invoke(controllerInst, parameters.ToArray());
                             }
-                            else
+                            catch (Exception)
                             {
-                                controllerInst = Activator.CreateInstance(Type.GetType("WebSockies." + messageModel.Controller), _userContainer, _lobbyContainer);
+                                Console.WriteLine("Oepsie woepsie iets in de code is hewemaal mwis gegaan UwU");
+                                throw;
                             }
                             
-                            List<Object> parameters = new List<Object>();
-                            parameters.Add(_userContainer.users.Find(u => u.SocketConnection.ConnectionInfo.Id == socket.ConnectionInfo.Id));
-                            if (messageModel.Parameters.Length != 0)
-                            {
-                                parameters.Add(messageModel.Parameters);
-                            }
-                            mi.Invoke(controllerInst, parameters.ToArray());
                             
                         };
                         socket.OnClose = () =>

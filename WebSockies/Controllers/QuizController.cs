@@ -64,7 +64,8 @@ namespace WebSockies
             if (user.Id == lobby.OwnerId)
             {
                 _lobbyContainer.Lobbies[_lobbyContainer.Lobbies.IndexOf(lobby)].IsOpen = false;
-                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Quiz started")));
+                user.SocketConnection.Send(
+                    JsonSerializer.Serialize(new ResponseModel("LobbyResponse", "OK", "Quiz started")));
                 NextQuestion(lobby);
             }
         }

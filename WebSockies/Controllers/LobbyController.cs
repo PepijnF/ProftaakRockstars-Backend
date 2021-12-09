@@ -32,7 +32,7 @@ namespace WebSockies
                 Console.WriteLine(user.Username + " joined lobby " + user.LobbyInviteCode);
 
                 lobby.Users.Add(user);
-                _lobbyLogic.SendAllLobbyUsers(paramStrings[0]);
+                _lobbyLogic.SendAllLobbyUsers(paramStrings);
 
             }
             else
@@ -49,7 +49,6 @@ namespace WebSockies
 
             Console.WriteLine(user.Username + " created a new lobby with invite code " + lobby.InviteCode);
             _userContainer.users[_userContainer.users.IndexOf(user)].LobbyInviteCode = lobby.InviteCode;
-            lobby.Users.Add(user);
             _lobbyLogic.SendAllLobbyUsers(lobby.InviteCode);
         }
 

@@ -114,7 +114,7 @@ namespace WebSockies
                 if (user.Id != questionUser.Id)
                 {
                     user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Answers", "OK",
-                        question.Serialize())));
+                        JsonSerializer.Serialize(question.Answers))));
                 }
             }
         }

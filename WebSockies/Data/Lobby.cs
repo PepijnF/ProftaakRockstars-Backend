@@ -19,23 +19,22 @@ namespace WebSockies.Data
 
         public Quiz Quiz { get; set; }
 
-        public int CurrentQuestion
-        {
-            get
+        public int CurrentQuestion { get; set; }
+
+
+        public bool NextQuestion() {
+            Quiz.Questions[CurrentQuestion].Answered = true;
+            CurrentQuestion++;
+            if (Quiz.Questions.Count < CurrentQuestion)
             {
-                int num = 0;
-                Quiz.Questions.ForEach(q =>
-                {
-                    if (q.Answered == true)
-                    {
-                        num += 1;
-                    }
-                });
-                return num;
+                return false;
             }
+            else {
+                HasAnswered.Clear();
+                return true;
+            }
+        
         }
-
-
         public Lobby(User user)
         {
             Id = Guid.NewGuid().ToString();

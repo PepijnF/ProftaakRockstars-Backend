@@ -109,7 +109,7 @@ namespace WebSockies
         
         }
         public void SendQuestion(User questionUser, Question question, Lobby lobby) {
-            questionUser.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("QuestionString", "OK", JsonSerializer.Serialize(question.QuestionString) )));
+            //questionUser.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("QuestionString", "OK", JsonSerializer.Serialize(question.QuestionString) )));
             List<User> users = lobby.Users;
             List<string> QuestionStrings = new List<string>();
             foreach (Answer answer in question.Answers)
@@ -118,11 +118,11 @@ namespace WebSockies
             }
             foreach (var user in users)
             {
-                if (user.Id != questionUser.Id)
-                {
+                //if (user.Id != questionUser.Id)
+                //{
                     user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Answers", "OK",
                         QuestionStrings)));
-                }
+                //}
             }
         }
         

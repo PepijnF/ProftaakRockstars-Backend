@@ -11,6 +11,8 @@ namespace WebSockies.Logic
             List<Answer> answers = new List<Answer>();
             answers.Add(new Answer(){AnswerString = "Ja", IsCorrect = true});
             answers.Add(new Answer(){AnswerString = "Nee", IsCorrect = false});
+            answers.Add(new Answer(){AnswerString = "Misschien", IsCorrect = false});
+            answers.Add(new Answer(){AnswerString = "Beetje", IsCorrect = false});
 
             return new Question()
                 { Answered = false, Id = "123", QuestionString = "Werkt t", TimeStarted = new DateTime(), Answers = answers};

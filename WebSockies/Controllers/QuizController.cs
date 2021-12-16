@@ -40,7 +40,6 @@ namespace WebSockies
                 // + 1 because there is one person with the question and no way to answer
                 if (lobby.HasAnswered.Count + 1 == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
                 {
-
                     GetLobbyScore(user.LobbyInviteCode);
                     lobby.Quiz.Questions[lobby.CurrentQuestion].Answered = true;
                     NextQuestion(lobby);

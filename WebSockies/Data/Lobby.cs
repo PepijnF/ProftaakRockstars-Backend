@@ -23,7 +23,6 @@ namespace WebSockies.Data
 
 
         public bool NextQuestion() {
-            Quiz.Questions[CurrentQuestion].Answered = true;
             CurrentQuestion++;
             if (Quiz.Questions.Count < CurrentQuestion)
             {

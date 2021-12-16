@@ -23,6 +23,9 @@ namespace WebSockies.Data.Models
             }
 
         }
+        
+        public ResponseModel(){}
+        
         public string Type { get; set; }
         public string Status { get; set; }
         public string Content { get; set; }

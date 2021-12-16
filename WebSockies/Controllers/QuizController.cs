@@ -30,20 +30,20 @@ namespace WebSockies
             if (lobby.Settings.LobbyType == LobbySettings.LobbyTypeEnum.Standard && !lobby.HasAnswered.Contains(user))
             {
                 lobby.HasAnswered.Add(user);
+                
+                var correctAnswer = lobby.Quiz.Questions[lobby.CurrentQuestion].Answers.Find(a => a.IsCorrect);
+                if (correctAnswer.AnswerString == answer.AnswerString)
+                {
+                    user.Score = +CalcScore(lobby, answer);
+                }
 
                 // + 1 because there is one person with the question and no way to answer
                 if (lobby.HasAnswered.Count + 1 == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
                 {
-                    var correctAnswer = lobby.Quiz.Questions[lobby.CurrentQuestion].Answers.Find(a => a.IsCorrect);
-                    if (correctAnswer.AnswerString == answer.AnswerString)
-                    {
-                        user.Score = +CalcScore(lobby, answer);
-                    }
 
                     GetLobbyScore(user.LobbyInviteCode);
-
+                    lobby.Quiz.Questions[lobby.CurrentQuestion].Answered = true;
                     NextQuestion(lobby);
-
                 }
             }
             else if (lobby.Settings.LobbyType == LobbySettings.LobbyTypeEnum.Traditional && !lobby.HasAnswered.Contains(user))

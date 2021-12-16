@@ -40,7 +40,7 @@ namespace WebSockies
                 // + 1 because there is one person with the question and no way to answer
                 if (lobby.HasAnswered.Count + 1 == _userContainer.users.FindAll(p => p.LobbyInviteCode == user.LobbyInviteCode).Count)
                 {
-                    GetLobbyScore(user.LobbyInviteCode);
+                    SplashScreenScore(user.LobbyInviteCode);
                     lobby.Quiz.Questions[lobby.CurrentQuestion].Answered = true;
                     NextQuestion(lobby);
                 }
@@ -96,15 +96,6 @@ namespace WebSockies
             int basescore = 1000;
             double ScoreDecayPerMs = (basescore / SettingsTimePerQuestion);
             return (int)Math.Round(basescore - (timetoanswer * ScoreDecayPerMs));
-        }
-
-        public void GetLobbyScore(string lobbyInviteCode) {
-            List<User> userList = _userContainer.users.FindAll(u => u.LobbyInviteCode == lobbyInviteCode);
-            foreach (User user in userList)
-            {
-                user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("SplashScreen","OK", JsonSerializer.Serialize(userList))));
-            }
-        
         }
         public void SendQuestion(User questionUser, Question question, Lobby lobby) {
             questionUser.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("QuestionString", "OK", JsonSerializer.Serialize(question.QuestionString) )));

@@ -25,8 +25,9 @@ namespace WebSockies
                     _userContainer = userContainer;
                     _lobbyContainer = lobbyContainer;
                     _questionContainer = questionContainer;
-                }
-        
+                    ClassMapper classMapper = new ClassMapper();
+            }
+                 
                 public void StartServer()
                 {
                     server.Start(socket =>

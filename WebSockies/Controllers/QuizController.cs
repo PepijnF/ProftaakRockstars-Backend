@@ -109,6 +109,7 @@ namespace WebSockies
         }
         public void SendQuestion(User questionUser, Question question, Lobby lobby) {
             questionUser.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("QuestionString", "OK", JsonSerializer.Serialize(question.QuestionString) )));
+            Console.WriteLine("QuestionString send to " + questionUser.Username);
             List<User> users = lobby.Users;
             List<string> QuestionStrings = new List<string>();
             foreach (Answer answer in question.Answers)
@@ -119,6 +120,7 @@ namespace WebSockies
             {
                 if (user.Id != questionUser.Id)
                 {
+                    Console.WriteLine("Answers send to " + user.Username);
                     user.SocketConnection.Send(JsonSerializer.Serialize(new ResponseModel("Answers", "OK",
                         QuestionStrings)));
                 }

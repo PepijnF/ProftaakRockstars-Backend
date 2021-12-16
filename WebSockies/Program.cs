@@ -87,7 +87,7 @@ namespace WebSockies
                         socket.OnError = exception =>
                         {
                             User user = _userContainer.users.Find(u => u.Id == socket.ConnectionInfo.Id.ToString());
-                            Console.WriteLine(user.Username + " Disconnected");
+                            Console.WriteLine(user.Username + " Disconnected because of an error");
                             Console.WriteLine(exception.Message);
                             _userContainer.users.Remove(user);
                             if (_lobbyContainer.Lobbies.Exists(l => l.OwnerId == user.Id))

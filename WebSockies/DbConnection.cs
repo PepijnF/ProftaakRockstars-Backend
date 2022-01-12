@@ -9,7 +9,7 @@ using MongoDB.Bson.Serialization;
 using WebSockies.Data;
 using MongoDB.Bson.IO;
 
-namespace TestProjecie
+namespace WebSockies.Db
 {
     public class DbConnection
     {
@@ -20,16 +20,24 @@ namespace TestProjecie
             _db = _dbClient.GetDatabase("Proftaak");
         }
         public Quiz GetQuiz(string quizName) {
-            var Quizzes = _db.GetCollection<BsonDocument>("Quizzes");
+            var Quizzes = _db.GetCollection<Quiz>("Quizzes");
 
-            var filter = Builders<BsonDocument>.Filter.Eq("Quizname", quizName);
-            var Quiz = Quizzes.Find(filter).FirstOrDefault();
-
-            Quiz SelectedQuiz = BsonSerializer.Deserialize<Quiz>(Quiz);
+            var filter = Builders<Quiz>.Filter.Eq("Name", quizName);
+            var SelectedQuiz = Quizzes.Find(filter).FirstOrDefault();
 
             return SelectedQuiz;
         }
+
+        public Quiz GetRandomQuiz()
+        {
+            var quizzes = _db.GetCollection<Quiz>("Quizzes");
+            var selectedQuiz = quizzes.Find(Builders<Quiz>.Filter.Empty).ToList();
+
+            var rand = new Random();
+
+            return selectedQuiz[rand.Next(0, 1)];
+        }
         
-        
+
     }
 }

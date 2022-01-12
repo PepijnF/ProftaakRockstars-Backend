@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using WebSockies.Data;
+using WebSockies.Db;
 
 namespace WebSockies.Logic
 {
@@ -15,13 +16,13 @@ namespace WebSockies.Logic
             answers.Add(new Answer(){AnswerString = "Beetje", IsCorrect = false});
 
             return new Question()
-                { Answered = false, Id = "123", QuestionString = "Werkt t", TimeStarted = new DateTime(), Answers = answers};
+                { Answered = false, QuestionString = "Werkt t", TimeStarted = new DateTime(), Answers = answers};
         }
         
         public static Quiz GetQuiz()
         {
-            return new Quiz()
-                { Description = "Test", Name = "test", Questions = new List<Question>() { CreateQuestion() } };
+            var dbConnection = new DbConnection();
+            return dbConnection.GetRandomQuiz();
         }
     }
 }

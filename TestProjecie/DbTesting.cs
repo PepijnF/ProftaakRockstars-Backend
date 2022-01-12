@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 using WebSockies.Data;
-using WebSockies.Db
+using WebSockies.Db;
 
 namespace TestProjecie
 {

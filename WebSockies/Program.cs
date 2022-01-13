@@ -82,7 +82,10 @@ namespace WebSockies
                             if (_lobbyContainer.Lobbies.Exists(l => l.OwnerId == user.Id))
                             {
                                 Lobby lobby = _lobbyContainer.Lobbies.Find(l => l.OwnerId == user.Id);
-                                lobby.NewOwnerRandom();
+                                if (!lobby.NewOwnerRandom())
+                                {
+                                    _lobbyContainer.RemoveLobby(lobby);
+                                }    
                             }
                         };
                         socket.OnError = exception =>

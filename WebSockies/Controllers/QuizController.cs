@@ -79,6 +79,18 @@ namespace WebSockies
                 SendQuestion(NextQuestionUser, lobby.Quiz.Questions[lobby.CurrentQuestion], lobby);
             }
         }
+        public void ClientNextQuestion(User user) {
+            if (user.IsHost)
+            {
+                NextQuestion(_lobbyContainer.GetLobbyById(user.LobbyInviteCode));
+            }
+            else
+            {
+                //User is not the host\
+                return;
+            }
+        
+        }
         
         public User SelectRandomUserFromLobby(string lobbyInviteCode)
         {
